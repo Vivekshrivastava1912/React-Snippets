@@ -1,38 +1,49 @@
-const express = require('express');
-const cors = require('cors');
-const helmet = require('helmet');
-const morgan = require('morgan');
-const cookieParser = require('cookie-parser');
-require('dotenv').config();
+import express from 'express'
+import cors from 'cors'
+import dotenv from 'dotenv'
+import cookieParser from 'cookie-parser'
+import morgan from 'morgan'
+import helmet from 'helmet'
+import connectDB from './config/connectDB.js'
 
-const app = express();
 
-// --- 1. Middlewares ---
-app.use(helmet()); 
-app.use(cors());   
-app.use(express.json()); 
-app.use(cookieParser()); 
-app.use(morgan('dev'));  
+dotenv.config()
 
-// --- 2. Routes ---
-app.get('/', (req, res) => {
-    res.json({
-        status: "success",
-        message: "Server bina database ke mast chal raha hai! 🚀"
-    });
-});
+const app = express()
 
-// Ek aur test route
-app.get('/test', (req, res) => {
-    res.send("Test route working fine! ✅");
-});
 
-// --- 3. Server Start ---
-const PORT = process.env.PORT || 5000;
+app.use(cors({
+    origin: [process.env.FRONTEND_URL ],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"] 
+}));
 
-app.listen(PORT, () => {
-  
-    console.log(`⚡ server is running successfully`);
-    console.log(`🔗 URL: http://localhost:${PORT}`);
-   
-});
+// 2. Middlewares
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(cookieParser())
+app.use(morgan('dev')) 
+app.use(helmet({
+    crossOriginResourcePolicy: false
+}))
+
+// 3. Routes
+app.get('/', (request, response) => {
+    response.json({
+        message: "Server is running vivek " + (process.env.PORT || 8000)
+    })
+})
+
+
+
+
+// 4. Database and Server Connection
+const PORT = process.env.PORT || 8000
+
+connectDB().then(() => {
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`)
+    })
+}).catch((error) => {
+    console.log('Failed to connect to database', error)
+})
