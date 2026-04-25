@@ -18,7 +18,11 @@ const userSchema = new mongoose.Schema({
         required: [true, "Please provide password"]
     },
 
-
+    credit : {
+        type: Number,
+        default: 0
+    }
+    ,
     mobile: {
         type: Number,
         default: null

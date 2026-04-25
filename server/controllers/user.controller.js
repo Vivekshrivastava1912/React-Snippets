@@ -42,7 +42,8 @@ export async function registerUserCantroller(request, response) {
         const payload = {
             name,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+             credit : 100 
         }
 
         const newUser = await UserModel(payload)
@@ -412,4 +413,85 @@ export async function resetpassword(request, response) {
             success: false
         })
     }
+}
+
+// ---------------------------------------------------get login user details ------------------------------------------------------------------------------//
+
+export async function userDetails(request ,response){
+    try{
+       const userId = request.userId
+       console.log(userId)
+       const user = await UserModel.findById(userId).select('-password -refresh_token')
+
+       return response.json({
+        message : 'user details',
+        data : user ,
+        error : false ,
+        success : true
+       })
+    }
+    catch(error){
+        return response.status(500).json({
+            message : 'Somthing is wrong..',
+            error : true ,
+            success : false
+        
+        })
+    }
+}
+
+//----------------------------------------------------creadit plane controller -----------------------------------------------------------------------------------//
+
+export async function creaditplane(request, response) {
+  try {
+    const userId = request.userId;
+    const { plan } = request.body;
+
+
+    
+   
+    const plans = {
+      basic: 500,
+      pro: 1000,
+      premium: 2000
+    };
+
+    
+    if (!(plan in plans)) {
+      return response.status(400).json({
+        message: "Invalid plan",
+        error: true,
+        success: false
+      });
+    }
+
+    // 4. Find user
+    const user = await UserModel.findById(userId);
+
+    if (!user) {
+      return response.status(404).json({
+        message: "User not found",
+        error: true,
+        success: false
+      });
+    }
+
+    
+    user.credit += plans[plan];
+    await user.save();
+
+    
+    return response.json({
+      message: "Plan activated successfully",
+      credits: user.credit,
+      success: true
+    });
+
+  } catch (error) {
+    return response.status(500).json({
+      message: error.message || error,
+      success: false,
+      error: true
+    });
+  }
 }
