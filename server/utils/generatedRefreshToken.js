@@ -1,10 +1,6 @@
 import UserModel from "../models/user.model.js"
 import jwt from 'jsonwebtoken'
 
-
-// refresh token ban rah hai jo 30 days tak rahe ga 
-
-
 const generatedRefreshToken = async(userId)=>{
 
     const token = await jwt.sign({
@@ -22,9 +18,7 @@ const generatedRefreshToken = async(userId)=>{
     }
     
   )
-
-
-    return token
+   return token
 
 
 }
