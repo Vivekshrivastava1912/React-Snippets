@@ -4,10 +4,10 @@
   "description": "",
   "type": "module",
   "main": "index.js",
- "scripts": {
-  "start": "node index.js",
-  "dev": "nodemon index.js"
-},
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
   "keywords": [],
   "author": "vivek shrivastava",
   "license": "ISC",
@@ -20,7 +20,8 @@
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.4.1",
-    "morgan": "^1.10.1"
+    "morgan": "^1.10.1",
+    "resend": "^6.12.2"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"
