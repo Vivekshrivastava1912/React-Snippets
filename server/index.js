@@ -6,6 +6,7 @@ import morgan from 'morgan'
 import helmet from 'helmet'
 import connectDB from './config/connectDB.js'
 import userRouter from './route/user.route.js'
+import userCodeRouter from './route/usercode.route.js'
 
 
 dotenv.config()
@@ -37,6 +38,7 @@ app.get('/', (request, response) => {
 
 
 app.use('/api/user', userRouter)
+app.use('/api/usercode', userCodeRouter)
 
 
 const PORT = process.env.PORT || 8000
