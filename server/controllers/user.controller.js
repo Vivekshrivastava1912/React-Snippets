@@ -43,7 +43,7 @@ export async function registerUserCantroller(request, response) {
             name,
             email,
             password: hashedPassword,
-             credit : 100 
+            credit: 100
         }
 
         const newUser = await UserModel(payload)
@@ -106,10 +106,10 @@ export async function loginController(request, response) {
             })
         }
 
-         const accesstoken = await generatedAccessToken(user._id)
+        const accesstoken = await generatedAccessToken(user._id)
         const refreshtoken = await generatedRefreshToken(user._id)
-        const updateuser = await UserModel.findByIdAndUpdate(user?._id,{
-            last_login_date : new Date()
+        const updateuser = await UserModel.findByIdAndUpdate(user?._id, {
+            last_login_date: new Date()
         })
         const cookieOptions = {
             httpOnly: true,
@@ -119,15 +119,13 @@ export async function loginController(request, response) {
 
 
 
-        response.cookie('accessToken', accesstoken, cookieOptions)
-        response.cookie('refreshToken', refreshtoken, cookieOptions)
-return response.json({
+        return response.json({
             message: "Login successful.",
             error: false,
             success: true,
             data: {
-                accesstoken,
-                refreshtoken
+                accessToken: accesstoken,
+                refreshToken: refreshtoken
             }
         })
 
@@ -149,64 +147,66 @@ return response.json({
 
 //----------------------------------------------------------logoutcontroller--------------------------------------------------------//
 
-export async function logoutController(request ,response){
+export async function logoutController(request, response) {
 
-  try{
+    try {
 
-    const userId = request.userId;
-    const cookieOptions = {
-        httpOnly: true,
-        secure: true,
-        sameSite: 'None'
-  }
+        const userId = request.userId;
+        const cookieOptions = {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'None'
+        }
 
-      response.clearCookie('accessToken', cookieOptions);
+        response.clearCookie('accessToken', cookieOptions);
         response.clearCookie('refreshToken', cookieOptions);
+        response.clearCookie('accesstoken', cookieOptions);
+        response.clearCookie('refreshtoken', cookieOptions);
 
 
- return response.json({
+        return response.json({
             message: "Logout successful...",
             error: false,
             success: true
         })
 
 
-}
+    }
 
-  catch(error){
-    return response.status(500).json({
-        message : error.message || error,
-        error :true ,
-        success : false 
-    })
-  }
+    catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
 
 
 
 }
 
 //----------------------------------------------------------updateUserdetailCantroller---------------------------------------------------//
-export async function userDetailcontroller(request , response){
+export async function userDetailcontroller(request, response) {
 
-    try{
-       const userId = request.userId;
-       const { name , email ,mobile,  password} = request.body ;
+    try {
+        const userId = request.userId;
+        const { name, email, mobile, password } = request.body;
 
         let hashedpassword = "";
-        if(password){
+        if (password) {
             const salt = await bcrypt.getSalt(10);
-            hashedpassword = await bcrypt.hash(password , salt)
+            hashedpassword = await bcrypt.hash(password, salt)
         }
 
-        const updateUser = await UserModel.updateOne({_id : userId} ,
+        const updateUser = await UserModel.updateOne({ _id: userId },
             {
-               ...(name && { name: name }),
-            ...(email && { email: email }),
-            ...(mobile && { mobile: mobile }),
-            ...(password && { password: hashedPassword })
+                ...(name && { name: name }),
+                ...(email && { email: email }),
+                ...(mobile && { mobile: mobile }),
+                ...(password && { password: hashedPassword })
             }
         )
-         return response.json({
+        return response.json({
             message: "updated user successfully...",
             error: false,
             success: true,
@@ -216,11 +216,11 @@ export async function userDetailcontroller(request , response){
 
 
     }
-    catch(error){
+    catch (error) {
         return response.status(500).json({
-            message : error.message || error ,
-            success :false ,
-            error :true 
+            message: error.message || error,
+            success: false,
+            error: true
         })
     }
 
@@ -229,7 +229,7 @@ export async function userDetailcontroller(request , response){
 
 export async function forgotPasswordController(request, response) {
 
-  
+
 
     try {
         const { email } = request.body
@@ -248,7 +248,7 @@ export async function forgotPasswordController(request, response) {
 
 
         const expireTime = new Date(Date.now() + 60 * 60 * 1000)
-    
+
         const update = await UserModel.findByIdAndUpdate(user._id, {
             forget_password_otp: otp,
             forget_password_expiry: expireTime.toISOString()
@@ -296,7 +296,7 @@ export async function verifyForgotPasswordOtp(request, response) {
             })
 
         }
-          
+
 
         const user = await UserModel.findOne({ email })
         if (!user) {
@@ -329,14 +329,14 @@ export async function verifyForgotPasswordOtp(request, response) {
             })
         }
 
-      
 
-     
 
-     const updateUser = await UserModel.findByIdAndUpdate(user?._id , {
-        forget_password_otp : "" ,
-        forget_password_expiry :""
-     })
+
+
+        const updateUser = await UserModel.findByIdAndUpdate(user?._id, {
+            forget_password_otp: "",
+            forget_password_expiry: ""
+        })
 
         return response.json({
             message: " Verify OTP successfully ... ",
@@ -417,25 +417,25 @@ export async function resetpassword(request, response) {
 
 // ---------------------------------------------------get login user details ------------------------------------------------------------------------------//
 
-export async function userDetails(request ,response){
-    try{
-       const userId = request.userId
-       console.log(userId)
-       const user = await UserModel.findById(userId).select('-password -refresh_token')
+export async function userDetails(request, response) {
+    try {
+        const userId = request.userId
+        console.log(userId)
+        const user = await UserModel.findById(userId).select('-password -refresh_token')
 
-       return response.json({
-        message : 'user details',
-        data : user ,
-        error : false ,
-        success : true
-       })
+        return response.json({
+            message: 'user details',
+            data: user,
+            error: false,
+            success: true
+        })
     }
-    catch(error){
+    catch (error) {
         return response.status(500).json({
-            message : 'Somthing is wrong..',
-            error : true ,
-            success : false
-        
+            message: 'Somthing is wrong..',
+            error: true,
+            success: false
+
         })
     }
 }
@@ -443,57 +443,57 @@ export async function userDetails(request ,response){
 //----------------------------------------------------creadit plane controller -----------------------------------------------------------------------------------//
 
 export async function creaditplane(request, response) {
-  try {
-    const userId = request.userId;
-    const { plan } = request.body;
+    try {
+        const userId = request.userId;
+        const { plan } = request.body;
 
 
-    
-   
-    const plans = {
-      basic: 500,
-      pro: 1000,
-      premium: 2000
-    };
 
-    
-    if (!(plan in plans)) {
-      return response.status(400).json({
-        message: "Invalid plan",
-        error: true,
-        success: false
-      });
+
+        const plans = {
+            basic: 500,
+            pro: 1000,
+            premium: 2000
+        };
+
+
+        if (!(plan in plans)) {
+            return response.status(400).json({
+                message: "Invalid plan",
+                error: true,
+                success: false
+            });
+        }
+
+        // 4. Find user
+        const user = await UserModel.findById(userId);
+
+        if (!user) {
+            return response.status(404).json({
+                message: "User not found",
+                error: true,
+                success: false
+            });
+        }
+
+
+        user.credit += plans[plan];
+        await user.save();
+
+
+        return response.json({
+            message: "Plan activated successfully",
+            credits: user.credit,
+            success: true
+        });
+
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            success: false,
+            error: true
+        });
     }
-
-    // 4. Find user
-    const user = await UserModel.findById(userId);
-
-    if (!user) {
-      return response.status(404).json({
-        message: "User not found",
-        error: true,
-        success: false
-      });
-    }
-
-    
-    user.credit += plans[plan];
-    await user.save();
-
-    
-    return response.json({
-      message: "Plan activated successfully",
-      credits: user.credit,
-      success: true
-    });
-
-  } catch (error) {
-    return response.status(500).json({
-      message: error.message || error,
-      success: false,
-      error: true
-    });
-  }
 }
 
 //-----------------------------------------------------refresh token controller -------------------------------------------------------------------------//
@@ -528,15 +528,16 @@ export async function refreshToken(request, response) {
             secure: true,
             sameSite: 'None'
         }
-        response.cookie('accessToken',newAccessToken,cookieOptions )
+        response.clearCookie('accesstoken', cookieOptions)
+        response.cookie('accessToken', newAccessToken, cookieOptions)
 
         // YAHAN ERROR AUR SUCCESS VALUES KO THEEK KIYA HAI
         return response.json({
-            message : "New Access token generated...",
-            error : false , 
-            success: true , 
-            data : {
-                accessToken : newAccessToken
+            message: "New Access token generated...",
+            error: false,
+            success: true,
+            data: {
+                accessToken: newAccessToken
             }
         })
 
