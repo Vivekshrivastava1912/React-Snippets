@@ -30,9 +30,9 @@ const Login = () => {
 
     try {
       const response = await Axios({
-        ...SummaryApi.login, // Make sure SummaryApi has login endpoint
+        ...SummaryApi.login, 
         data: data,
-        withCredentials: true // <--- SIRF YE LINE ADD KI HAI COOKIES KE LIYE
+        withCredentials: true 
       })
 
       if (response.data.error) {
@@ -42,14 +42,9 @@ const Login = () => {
       if (response.data.success) {
         toast.success(response.data.message)
         
-        // Storing token/user
-        localStorage.setItem('accesstoken',response.data.data.accesstoken)
-        localStorage.setItem('refreshtoken',response.data.data.refreshtoken)
         setData({ email: "", password: "" })
         
-        // --- CHANGE MADE HERE ---
-        // navigate("/") ko hata kar window.location.href lagaya hai
-        // Taki page reload ho aur Header update ho jaye
+        
         window.location.href = "/" 
       }
     } catch (error) {

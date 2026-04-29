@@ -6,13 +6,8 @@ const Axios = axios.create({
     withCredentials: true
 });
 
-// 1. REQUEST INTERCEPTOR: Access Token bhejne ke liye
 Axios.interceptors.request.use(
     async (config) => {
-        const accesstoken = localStorage.getItem('accesstoken');
-        if (accesstoken) {
-            config.headers.Authorization = `Bearer ${accesstoken}`;
-        }
         return config;
     },
     (error) => {
@@ -20,7 +15,7 @@ Axios.interceptors.request.use(
     }
 );
 
-// 2. RESPONSE INTERCEPTOR: Refresh Token logic yahan aayega
+
 Axios.interceptors.response.use(
     (response) => {
         return response;
@@ -28,47 +23,38 @@ Axios.interceptors.response.use(
     async (error) => {
         let originRequest = error.config;
 
-        // Status 401 check karna (Unauthorized)
+    
         if (error.response && error.response.status === 401 && !originRequest._retry) {
             originRequest._retry = true; // Retry flag set karna
 
-            const refreshtoken = localStorage.getItem("refreshtoken"); // Mistake Fixed: getItem use karein
-
-            if (refreshtoken) {
-                const newAccesstoken = await refreshAccessToken(refreshtoken);
+            try {
+               
+                const newAccesstoken = await refreshAccessToken();
                 
                 if (newAccesstoken) {
-                    originRequest.headers.Authorization = `Bearer ${newAccesstoken}`;
-                    return Axios(originRequest); // Request dubara bhejna
+                   
+                    return Axios(originRequest); 
                 }
+            } catch (refreshError) {
+               
             }
-            
-            // Agar refresh token bhi fail ho jaye toh logout karwa sakte hain
-            // localStorage.clear();
-            // window.location.href = "/login";
         }
         return Promise.reject(error);
     }
 );
 
-const refreshAccessToken = async (refreshtoken) => {
+const refreshAccessToken = async () => {
     try {
-        // Alag axios instance ya basic axios use karein taaki interceptor loop na bane
+     
         const response = await axios({
-            ...SummaryApi.refreshtoken, 
+            ...SummaryApi.refreshToken, 
             baseURL: baseURL,
-            headers: {
-                Authorization: `Bearer ${refreshtoken}`
-            }
+            withCredentials: true
         });
 
-        const accesstoken = response.data.data.accesstoken;
-        localStorage.setItem('accesstoken', accesstoken);
-        return accesstoken;
+        return response.data.data.accessToken;
     } catch (error) {
         console.log("Refresh token expired or invalid", error);
-        localStorage.removeItem('accesstoken');
-        localStorage.removeItem('refreshtoken');
         return null;
     }
 }

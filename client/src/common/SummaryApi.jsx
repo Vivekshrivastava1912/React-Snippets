@@ -1,6 +1,6 @@
 import ForgotPassword from "../pages/ForgotPassword"
 
-// Isse 5173 se badal kar 8000 kar dein
+
 export const baseURL = "http://localhost:8000"
 
 const SummaryApi = {
@@ -17,9 +17,10 @@ const SummaryApi = {
         url: '/api/user/forget-password',
         method: "put"
     },
-
-  
-  
+    refreshToken: {
+        url: '/api/user/refresh-token',
+        method: "post"
+    }
 }
 
 export default SummaryApi
