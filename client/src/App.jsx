@@ -2,12 +2,15 @@ import React from 'react'
 import { Outlet } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import Header from './component/Header'
+import Login from './pages/Login'
+import Register from './pages/Register'
 
 function App() {
 
   return (
     <>
-    
+    <Login/>
+    <Register/>
       <Header />
       <main className='min-h-[78vh]'>
         <Outlet />
