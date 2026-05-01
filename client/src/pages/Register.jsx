@@ -53,110 +53,106 @@ const Register = () => {
   }
 
   return (
-    <>
-      {/* Background ko fully transparent/blur rakhne ke liye fixed overlay */}
-      <section className='fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-md p-4'>
+    <section className='fixed inset-0 z-50 flex items-center justify-center bg-black p-4'>
+      
+      <div className='bg-black w-full max-w-md p-8 rounded-md border border-white/10 relative'>
         
-        <div className='bg-white w-full max-w-md p-8 rounded-2xl shadow-2xl border border-purple-100 relative overflow-hidden'>
-          
-          {/* Back Button - Ab ye hamesha Home page (/) par le jayega */}
-          <button 
-            onClick={() => navigate("/")} 
-            className='absolute top-5 left-5 text-gray-400 hover:text-purple-600 transition-colors flex items-center gap-1 text-sm font-medium'
-          >
-            <IoArrowBack size={20}/> Back
-          </button>
+        <button 
+          onClick={() => navigate("/")} 
+          className='absolute top-6 left-6 text-gray-500 hover:text-white transition-colors flex items-center gap-2 text-sm'
+        >
+          <IoArrowBack size={18}/> Back
+        </button>
 
-          <div className='text-center mb-8 mt-4'>
-              <h2 className='text-3xl font-bold text-gray-800 tracking-tight'>FlashMart</h2>
-              <p className='text-purple-600 font-medium mt-2'>Welcome! Create your account</p>
+        <div className='text-center mb-8 mt-6'>
+            <h2 className='text-3xl font-bold text-white tracking-tight mb-1'>Register</h2>
+            <p className='text-gray-500 text-xs uppercase tracking-widest'>Create your account</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className='space-y-4'>
+          <div className='space-y-1.5'>
+            <label htmlFor='name' className='block text-xs font-medium text-gray-400 ml-1'>Name</label>
+            <input 
+              type="text"
+              id='name'
+              autoFocus
+              value={data.name}
+              name='name'
+              onChange={handleChange}
+              className='w-full px-4 py-3 rounded-sm bg-white/5 border border-white/10 text-white focus:border-white/30 outline-none transition-all'
+              placeholder='John Doe' 
+            />
           </div>
 
-          <form onSubmit={handleSubmit} className='space-y-5'>
-            <div className='space-y-1'>
-              <label htmlFor='name' className='block text-sm font-semibold text-gray-700 ml-1'>Name</label>
-              <input 
-                type="text"
-                id='name'
-                autoFocus
-                value={data.name}
-                name='name'
-                onChange={handleChange}
-                className='w-full px-4 py-3 rounded-xl bg-purple-50 border border-transparent focus:border-purple-300 focus:bg-white focus:ring-2 focus:ring-purple-200 outline-none transition-all duration-200'
-                placeholder='Enter Your Name' 
-              />
-            </div>
+          <div className='space-y-1.5'>
+            <label htmlFor='email' className='block text-xs font-medium text-gray-400 ml-1'>Email</label>
+            <input 
+              type="email"
+              id='email'
+              value={data.email}
+              name='email'
+              onChange={handleChange}
+              className='w-full px-4 py-3 rounded-sm bg-white/5 border border-white/10 text-white focus:border-white/30 outline-none transition-all'
+              placeholder='name@example.com'
+            />
+          </div>
 
-            <div className='space-y-1'>
-              <label htmlFor='email' className='block text-sm font-semibold text-gray-700 ml-1'>Email</label>
-              <input 
-                type="email"
-                id='email'
-                value={data.email}
-                name='email'
-                onChange={handleChange}
-                className='w-full px-4 py-3 rounded-xl bg-purple-50 border border-transparent focus:border-purple-300 focus:bg-white focus:ring-2 focus:ring-purple-200 outline-none transition-all duration-200'
-                placeholder='Enter Your Email'
-              />
-            </div>
-
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-              <div className='space-y-1'>
-                <label htmlFor='password' className='block text-sm font-semibold text-gray-700 ml-1'>Password</label>
-                <div className='relative flex items-center'>
-                    <input 
-                    type={showPassword ? "text" : "password"}
-                    id='password'
-                    value={data.password}
-                    name='password'
-                    onChange={handleChange}
-                    className='w-full px-4 py-3 rounded-xl bg-purple-50 border border-transparent focus:border-purple-300 focus:bg-white focus:ring-2 focus:ring-purple-200 outline-none transition-all duration-200'
-                    placeholder='Password' 
-                    />
-                    <div onClick={() => setShowPassword(prev => !prev)} className='absolute right-3 cursor-pointer text-gray-500 hover:text-purple-600'>
-                        { showPassword ? <IoEyeOutline size={20}/> : <IoEyeOffOutline size={20}/> }
-                    </div>
-                </div>
-              </div>
-
-              <div className='space-y-1'>
-                <label htmlFor='confirmPassword' className='block text-sm font-semibold text-gray-700 ml-1'>Confirm</label>
-                <div className='relative flex items-center'>
-                    <input 
-                    type={showConfirmPassword ? "text" : "password"}
-                    id='confirmPassword'
-                    value={data.confirmPassword}
-                    name='confirmPassword'
-                    onChange={handleChange}
-                    className='w-full px-4 py-3 rounded-xl bg-purple-50 border border-transparent focus:border-purple-300 focus:bg-white focus:ring-2 focus:ring-purple-200 outline-none transition-all duration-200'
-                    placeholder='Confirm' 
-                    />
-                    <div onClick={() => setShowConfirmPassword(prev => !prev)} className='absolute right-3 cursor-pointer text-gray-500 hover:text-purple-600'>
-                        { showConfirmPassword ? <IoEyeOutline size={20}/> : <IoEyeOffOutline size={20}/> }
-                    </div>
-                </div>
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+            <div className='space-y-1.5'>
+              <label htmlFor='password' title='Password' className='block text-xs font-medium text-gray-400 ml-1'>Password</label>
+              <div className='relative flex items-center'>
+                  <input 
+                  type={showPassword ? "text" : "password"}
+                  id='password'
+                  value={data.password}
+                  name='password'
+                  onChange={handleChange}
+                  className='w-full px-4 py-3 rounded-sm bg-white/5 border border-white/10 text-white focus:border-white/30 outline-none transition-all'
+                  placeholder='••••••••' 
+                  />
+                  <div onClick={() => setShowPassword(prev => !prev)} className='absolute right-3 cursor-pointer text-gray-500 hover:text-white'>
+                      { showPassword ? <IoEyeOutline size={18}/> : <IoEyeOffOutline size={18}/> }
+                  </div>
               </div>
             </div>
 
-            <button 
-              disabled={!valideValue} 
-              className={`w-full py-3.5 rounded-xl font-bold text-white shadow-md transform transition-all duration-300 active:scale-95 
-                ${valideValue 
-                  ? "bg-purple-600 hover:bg-purple-700 cursor-pointer" 
-                  : "bg-gray-300 cursor-not-allowed"}`}
-            >
-              Register Now
-            </button>
+            <div className='space-y-1.5'>
+              <label htmlFor='confirmPassword' title='Confirm' className='block text-xs font-medium text-gray-400 ml-1'>Confirm</label>
+              <div className='relative flex items-center'>
+                  <input 
+                  type={showConfirmPassword ? "text" : "password"}
+                  id='confirmPassword'
+                  value={data.confirmPassword}
+                  name='confirmPassword'
+                  onChange={handleChange}
+                  className='w-full px-4 py-3 rounded-sm bg-white/5 border border-white/10 text-white focus:border-white/30 outline-none transition-all'
+                  placeholder='••••••••' 
+                  />
+                  <div onClick={() => setShowConfirmPassword(prev => !prev)} className='absolute right-3 cursor-pointer text-gray-500 hover:text-white'>
+                      { showConfirmPassword ? <IoEyeOutline size={18}/> : <IoEyeOffOutline size={18}/> }
+                  </div>
+              </div>
+            </div>
+          </div>
 
-            <p className='text-center text-sm text-gray-500 mt-4'>
-              Already have an account? <Link to={"/login"} className='text-purple-700 font-bold hover:underline cursor-pointer ml-1'>
-                Login
-              </Link>
-            </p>
-          </form>
-        </div>
-      </section>
-    </>
+          <button 
+            disabled={!valideValue} 
+            className={`w-full py-3 rounded-sm font-bold text-sm uppercase tracking-wider transition-all mt-4
+              ${valideValue 
+                ? "bg-white text-black hover:bg-gray-200" 
+                : "bg-white/10 text-white/30 cursor-not-allowed"}`}
+          >
+            Create Account
+          </button>
+
+          <p className='text-center text-xs text-gray-500 mt-6'>
+            Already a member? <Link to={"/login"} className='text-white font-bold hover:underline ml-1'>
+              Login
+            </Link>
+          </p>
+        </form>
+      </div>
+    </section>
   )
 }
 
