@@ -116,7 +116,9 @@ export async function loginController(request, response) {
             secure: true,
             sameSite: 'None'
         }
-
+        // Ye code missing hai aapke loginController mein
+        response.cookie('accessToken', accesstoken, cookieOptions)
+        response.cookie('refreshToken', refreshtoken, cookieOptions)
 
 
         return response.json({
