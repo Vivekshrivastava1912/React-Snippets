@@ -23,7 +23,7 @@ const Header = () => {
 
         {/* Navigation */}
         {/* Navigation */}
-        <nav className='hidden md:flex items-center gap-3 bg-[#0a0a0a] border border-white/5 p-1.5 rounded-2xl'>
+        <nav className='hidden md:flex items-center gap-3 bg-[#0a0a0a] border border-white/10 p-1.5 rounded-2xl  hover:bg-white/10'>
           <Link
             to="/"
             className={`px-5 py-2 text-sm font-bold rounded-xl transition-all duration-300 ${
