@@ -5,7 +5,7 @@ export async function saveUserCode(request, response) {
 
     try {
         const userId = request.userId;
-        const { code, title } = request.body;
+        const { code, title ,status } = request.body;
 
         if (!userId) {
             return response.status(401).json({
@@ -15,9 +15,9 @@ export async function saveUserCode(request, response) {
             })
         }
 
-        if (!code || !title) {
+        if (!code || !title|| !status) {
             return response.status(400).json({
-                message: "code and title are required",
+                message: "code, title, and status are required",
                 error: true,
                 success: false
             })
@@ -35,7 +35,8 @@ export async function saveUserCode(request, response) {
         const payload = {
             userId: userId,
             code: code,
-            title: title
+            title: title,
+            status: status
         }
         const usercode = await UserCodeModel.create(payload)
 
@@ -59,4 +60,31 @@ export async function saveUserCode(request, response) {
     }
 
 
+}
+
+export async function getUserCodes(request, response) {
+    try {
+        const search = request.query.search || '';
+        
+        // Find public components that match the search query
+        const query = {
+            title: { $regex: search, $options: 'i' },
+            status: 'Public' 
+        };
+
+        const codes = await UserCodeModel.find(query).sort({ createdAt: -1 });
+
+        return response.json({
+            message: "Codes fetched successfully",
+            data: codes,
+            success: true,
+            error: false
+        });
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        });
+    }
 } 

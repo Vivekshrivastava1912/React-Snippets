@@ -13,13 +13,22 @@ const userCodeSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-
+  
+  status: {
+        type: String,
+        enum: ["Public", "Private"],
+        default: "Public"
+    },
   
   title: {
     type: String,
     required: true
-  }
-});
+  },
+  
+},
+{ timestamps: true });
+
+userCodeSchema.index({ title: "text", code: "text" });
 
 const UserCodeModel = mongoose.model('UserCode', userCodeSchema);
 export default UserCodeModel;
