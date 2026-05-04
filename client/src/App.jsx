@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux'
 import Axios from './utils/Axios'
 import SummaryApi from './common/SummaryApi'
 import { setUserDetails } from './redux/userSlice'
+import AddUserComponent from './component/AddUserComponent'
 
 function App() {
   const dispatch = useDispatch()
@@ -30,6 +31,7 @@ function App() {
 
   return (
     <>
+  
       <Header />
       <main className='min-h-[78vh]'>
         <Outlet />

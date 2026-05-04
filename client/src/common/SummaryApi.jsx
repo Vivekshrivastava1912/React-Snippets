@@ -35,6 +35,10 @@ const SummaryApi = {
     logout: {
         url: '/api/user/logout',
         method: "get"
+    },
+    saveCode: {
+        url: '/api/usercode/add-user-code',
+        method: 'post'
     }
 }
 

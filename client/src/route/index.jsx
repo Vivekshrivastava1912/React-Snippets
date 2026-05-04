@@ -7,6 +7,7 @@ import ForgotPassword from "../pages/ForgotPassword";
 import VerifyOtp from "../pages/VerifyOtp";
 import ResetPassword from "../pages/ResetPassword";
 import UserUpdate from "../pages/UserUpdate";
+import AddUserComponent from "../component/AddUserComponent";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: "userdetailupdate",
         element: <UserUpdate />
+      },
+      {
+        path : "addsnippet",
+        element : <AddUserComponent/>
       }
     ]
   }

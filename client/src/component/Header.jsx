@@ -26,33 +26,30 @@ const Header = () => {
         <nav className='hidden md:flex items-center gap-3 bg-[#0a0a0a] border border-white/10 p-1.5 rounded-2xl  hover:bg-white/10'>
           <Link
             to="/"
-            className={`px-5 py-2 text-sm font-bold rounded-xl transition-all duration-300 ${
-              location.pathname === "/" 
-              ? "bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.15)]" 
-              : "text-gray-500 hover:text-white hover:bg-white/10"
-            }`}
+            className={`px-5 py-2 text-sm font-bold rounded-xl transition-all duration-300 ${location.pathname === "/"
+                ? "bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.15)]"
+                : "text-gray-500 hover:text-white hover:bg-white/10"
+              }`}
           >
             Home
           </Link>
-          
+
           <Link
-            to="/ai-lab"
-            className={`px-5 py-2 text-sm font-bold rounded-xl transition-all duration-300 ${
-              location.pathname === "/ai-lab" 
-              ? "bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.15)]" 
-              : "text-gray-500 hover:text-white hover:bg-white/10"
-            }`}
+            to="/addsnippet"
+            className={`px-5 py-2 text-sm font-bold rounded-xl transition-all duration-300 ${location.pathname === "/addsnippet"
+                ? "bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.15)]"
+                : "text-gray-500 hover:text-white hover:bg-white/10"
+              }`}
           >
             AI Lab
           </Link>
 
           <Link
             to="/components"
-            className={`px-5 py-2 text-sm font-bold rounded-xl transition-all duration-300 ${
-              location.pathname === "/components" 
-              ? "bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.15)]" 
-              : "text-gray-500 hover:text-white hover:bg-white/10"
-            }`}
+            className={`px-5 py-2 text-sm font-bold rounded-xl transition-all duration-300 ${location.pathname === "/components"
+                ? "bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.15)]"
+                : "text-gray-500 hover:text-white hover:bg-white/10"
+              }`}
           >
             Components
           </Link>
