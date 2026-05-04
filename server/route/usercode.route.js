@@ -5,6 +5,6 @@ import { saveUserCode, getUserCodes } from "../controllers/usercode.controller.j
 const userCodeRouter = Router();
 
 userCodeRouter.post('/add-user-code', auth, saveUserCode);
-userCodeRouter.get('/get-user-codes', getUserCodes);
+userCodeRouter.get('/get-user-codes', auth, getUserCodes);
 
 export default userCodeRouter;

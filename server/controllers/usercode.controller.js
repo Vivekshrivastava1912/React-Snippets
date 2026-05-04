@@ -72,7 +72,7 @@ export async function getUserCodes(request, response) {
             status: 'Public' 
         };
 
-        const codes = await UserCodeModel.find(query).sort({ createdAt: -1 });
+        const codes = await UserCodeModel.find(query).populate('userId', 'name').sort({ createdAt: -1 });
 
         return response.json({
             message: "Codes fetched successfully",
