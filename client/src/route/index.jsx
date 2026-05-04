@@ -8,6 +8,7 @@ import VerifyOtp from "../pages/VerifyOtp";
 import ResetPassword from "../pages/ResetPassword";
 import UserUpdate from "../pages/UserUpdate";
 import AddUserComponent from "../component/AddUserComponent";
+import Componentpage from "../pages/Componentpage";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
       {
         path : "addsnippet",
         element : <AddUserComponent/>
+      },
+      {
+        path: "components",
+        element: <Componentpage />
       }
     ]
   }

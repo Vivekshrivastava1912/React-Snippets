@@ -39,6 +39,10 @@ const SummaryApi = {
     saveCode: {
         url: '/api/usercode/add-user-code',
         method: 'post'
+    },
+    getUserCodes: {
+        url: '/api/usercode/get-user-codes',
+        method: 'get'
     }
 }
 
