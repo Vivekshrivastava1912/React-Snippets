@@ -43,6 +43,10 @@ const SummaryApi = {
     getUserCodes: {
         url: '/api/usercode/get-user-codes',
         method: 'get'
+    },
+    aiGeneration: {
+        url: '/api/ai/grok',
+        method: 'post'
     }
 }
 

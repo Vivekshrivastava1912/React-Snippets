@@ -113,7 +113,7 @@ const EditComponent = () => {
                         </button>
                         <button 
                             onClick={() => setShowSaveModal(true)}
-                            className="px-6 py-2 bg-white text-black rounded text-sm uppercase tracking-widest font-bold hover:bg-gray-200 transition-colors"
+                            className="px-6 py-2 bg-yellow-500 text-black rounded text-sm uppercase tracking-widest font-bold hover:bg-yellow-400 transition-colors shadow-[0_0_20px_rgba(234,179,8,0.2)]"
                         >
                             Continue to Save
                         </button>
@@ -127,7 +127,7 @@ const EditComponent = () => {
                         <textarea
                             value={code}
                             onChange={(e) => setCode(e.target.value)}
-                            className="w-full h-150 bg-[#0a0a0a] border border-white/10 p-4 rounded-lg font-mono text-sm outline-none focus:border-white/30 text-gray-300 resize-none whitespace-pre"
+                            className="w-full h-150 bg-[#0a0a0a] border border-white/10 p-4 rounded-lg font-mono text-sm outline-none focus:border-yellow-500/30 text-gray-300 resize-none whitespace-pre transition-all"
                             spellCheck="false"
                         />
                     </div>
@@ -140,23 +140,23 @@ const EditComponent = () => {
                             <div className="flex gap-2 items-center">
                                 <button 
                                     onClick={() => setZoom(prev => Math.max(prev - 0.1, 0.3))}
-                                    className="w-8 h-8 flex items-center justify-center bg-white/10 hover:bg-white/20 border border-white/20 rounded text-white transition-colors"
+                                    className="w-8 h-8 flex items-center justify-center bg-white/5 hover:bg-yellow-500/10 border border-white/10 rounded text-gray-400 hover:text-yellow-500 transition-colors"
                                 >
                                     -
                                 </button>
-                                <span className="text-[10px] text-gray-500 uppercase tracking-tighter w-10 text-center">
+                                <span className="text-[10px] text-yellow-500/50 uppercase tracking-tighter w-10 text-center font-mono">
                                     {Math.round(zoom * 100)}%
                                 </span>
                                 <button 
                                     onClick={() => setZoom(prev => Math.min(prev + 0.1, 2))}
-                                    className="w-8 h-8 flex items-center justify-center bg-white/10 hover:bg-white/20 border border-white/20 rounded text-white transition-colors"
+                                    className="w-8 h-8 flex items-center justify-center bg-white/5 hover:bg-yellow-500/10 border border-white/10 rounded text-gray-400 hover:text-yellow-500 transition-colors"
                                 >
                                     +
                                 </button>
                             </div>
                         </div>
 
-                        <div className="w-full h-150 bg-black border border-white/10 rounded-lg p-6 overflow-auto relative z-0" style={{ transform: 'translate3d(0,0,0)' }}>
+                        <div className="w-full h-150 bg-black border border-white/10 rounded-lg p-6 overflow-auto relative z-0 focus-within:border-yellow-500/20 transition-all" style={{ transform: 'translate3d(0,0,0)' }}>
                             <LiveProvider code={code} scope={scope} transformCode={transformCode} noInline={true}>
                                 <div 
                                     className="min-h-full w-full flex justify-center items-start transition-transform duration-200 ease-out"
@@ -164,7 +164,7 @@ const EditComponent = () => {
                                 >
                                     <LivePreview className="w-full" />
                                 </div>
-                                <LiveError className="text-red-400 text-xs mt-6 font-mono whitespace-pre-wrap bg-red-400/10 p-4 rounded" />
+                                <LiveError className="text-red-400 text-xs mt-6 font-mono whitespace-pre-wrap bg-red-400/10 p-4 rounded border border-red-400/20" />
                             </LiveProvider>
                         </div>
                     </div>
@@ -174,37 +174,37 @@ const EditComponent = () => {
             {/* Modal Overlay */}
             {showSaveModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-6">
-                    <div className="w-full max-w-xl bg-[#050505] border border-white/10 shadow-[0_0_25px_rgba(255,255,255,0.05)] p-8 rounded-lg relative">
+                    <div className="w-full max-w-xl bg-[#050505] border border-white/10 shadow-[0_0_25px_rgba(234,179,8,0.05)] p-8 rounded-lg relative">
                         <button 
                             onClick={() => setShowSaveModal(false)}
-                            className="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors"
+                            className="absolute top-4 right-4 text-gray-500 hover:text-yellow-500 transition-colors"
                         >
                             <LucideIcons.X size={20} />
                         </button>
                         
-                        <h2 className="text-xl font-light tracking-widest mb-8 border-b border-white/10 pb-3 uppercase text-center text-gray-200">
+                        <h2 className="text-xl font-light tracking-widest mb-8 border-b border-white/5 pb-3 uppercase text-center text-yellow-500">
                             Save Snippet
                         </h2>
 
                         <form onSubmit={handleFinalSave} className="space-y-7">
                             <div className="group">
-                                <label className="block text-[11px] uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-gray-300 transition-colors">Title</label>
+                                <label className="block text-[11px] uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-yellow-500 transition-colors">Title</label>
                                 <input
                                     type="text"
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
                                     placeholder="Enter snippet title..."
-                                    className="w-full bg-transparent border-b border-white/10 py-2 outline-none focus:border-white/60 text-gray-200 transition-colors font-light placeholder:text-gray-700"
+                                    className="w-full bg-transparent border-b border-white/10 py-2 outline-none focus:border-yellow-500/60 text-gray-200 transition-colors font-light placeholder:text-gray-700"
                                     required
                                 />
                             </div>
 
                             <div className="group">
-                                <label className="block text-[11px] uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-gray-300 transition-colors">Visibility</label>
+                                <label className="block text-[11px] uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-yellow-500 transition-colors">Visibility</label>
                                 <select
                                     value={status}
                                     onChange={(e) => setStatus(e.target.value)}
-                                    className="w-full bg-[#0a0a0a] border-b border-white/10 py-2 px-1 outline-none focus:border-white/60 text-sm font-light cursor-pointer text-gray-300"
+                                    className="w-full bg-[#0a0a0a] border-b border-white/10 py-2 px-1 outline-none focus:border-yellow-500/60 text-sm font-light cursor-pointer text-gray-300"
                                 >
                                     <option value="Public">Public</option>
                                     <option value="Private">Private</option>
@@ -215,7 +215,7 @@ const EditComponent = () => {
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className="w-full sm:w-auto border border-white/30 px-10 py-2.5 rounded-sm text-xs uppercase tracking-[0.2em] hover:bg-white hover:text-black focus:ring-2 focus:ring-white/20 outline-none transition-all duration-300 disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:text-white"
+                                    className="w-full sm:w-auto bg-yellow-500 text-black px-10 py-2.5 rounded-sm text-xs uppercase tracking-[0.2em] font-bold hover:bg-yellow-400 focus:ring-2 focus:ring-yellow-500/20 outline-none transition-all duration-300 disabled:opacity-50"
                                 >
                                     {loading ? 'Saving...' : 'Execute Save'}
                                 </button>

@@ -10,6 +10,7 @@ import UserUpdate from "../pages/UserUpdate";
 import AddUserComponent from "../component/AddUserComponent";
 import Componentpage from "../pages/Componentpage";
 import EditComponent from "../pages/EditComponent";
+import AicomponentGen from "../pages/AicomponentGen";
 
 const router = createBrowserRouter([
   {
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
       {
         path: "edit-component",
         element: <EditComponent />
+      },
+      {
+        path: "aicomponent-gen",
+        element: <AicomponentGen/>
       }
     ]
   }

@@ -107,7 +107,7 @@ const Componentpage = () => {
                     </p>
 
                     <div className="w-full max-w-2xl relative group mt-8">
-                        <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-gray-500 group-focus-within:text-white transition-colors">
+                        <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-gray-500 group-focus-within:text-yellow-500 transition-colors">
                             <FaSearch />
                         </div>
                         <input
@@ -115,14 +115,14 @@ const Componentpage = () => {
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             placeholder="Search components by title..."
-                            className="w-full bg-[#0a0a0a] border border-white/10 rounded-full py-4 pl-12 pr-6 outline-none focus:border-white/30 focus:shadow-[0_0_20px_rgba(255,255,255,0.05)] text-white placeholder:text-gray-600 transition-all font-light"
+                            className="w-full bg-[#0a0a0a] border border-white/10 rounded-full py-4 pl-12 pr-6 outline-none focus:border-yellow-500/30 focus:shadow-[0_0_20px_rgba(234,179,8,0.05)] text-white placeholder:text-gray-600 transition-all font-light"
                         />
                     </div>
                 </div>
 
                 {loading ? (
                     <div className="flex justify-center items-center py-20">
-                        <div className="w-10 h-10 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
+                        <div className="w-10 h-10 border-2 border-white/20 border-t-yellow-500 rounded-full animate-spin"></div>
                     </div>
                 ) : components.length === 0 ? (
                     <div className="text-center py-20 border border-white/5 bg-white/2 rounded-2xl">
@@ -133,17 +133,17 @@ const Componentpage = () => {
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {components.map((comp) => (
-                            <div key={comp._id} className="bg-[#0a0a0a] border border-white/10 rounded-xl overflow-hidden hover:border-white/20 transition-all duration-300 group hover:shadow-[0_0_30px_rgba(255,255,255,0.02)] flex flex-col">
+                            <div key={comp._id} className="bg-[#0a0a0a] border border-white/10 rounded-xl overflow-hidden hover:border-yellow-500/20 transition-all duration-300 group hover:shadow-[0_0_30px_rgba(234,179,8,0.02)] flex flex-col">
                                 <div className="p-5 border-b border-white/5 flex justify-between items-start bg-white/2">
                                     <div>
-                                        <h3 className="text-lg font-bold tracking-tight capitalize group-hover:text-white text-gray-200 transition-colors">
+                                        <h3 className="text-lg font-bold tracking-tight capitalize group-hover:text-yellow-500 text-gray-200 transition-colors">
                                             {comp.title}
                                         </h3>
                                         <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-1 font-bold">
                                             {new Date(comp.createdAt).toLocaleDateString()} {comp.userId?.name ? `• by ${comp.userId.name}` : ''}
                                         </p>
                                     </div>
-                                    <div className="bg-white/10 text-white text-[9px] px-2 py-1 rounded uppercase tracking-widest font-bold">
+                                    <div className="bg-yellow-500/10 text-yellow-500 text-[9px] px-2 py-1 rounded uppercase tracking-widest font-bold border border-yellow-500/20">
                                         {comp.status}
                                     </div>
                                 </div>
@@ -152,17 +152,17 @@ const Componentpage = () => {
                                     <div className="absolute top-3 right-3 z-10 flex gap-2">
                                         <button
                                             onClick={() => navigate('/edit-component', { state: { title: comp.title, code: comp.code } })}
-                                            className="w-8 h-8 rounded bg-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/20 transition-all"
+                                            className="w-8 h-8 rounded bg-white/10 flex items-center justify-center text-gray-400 hover:text-yellow-500 hover:bg-yellow-500/10 transition-all border border-transparent hover:border-yellow-500/20"
                                             title="Edit Component"
                                         >
                                             <FaIcons.FaEdit />
                                         </button>
                                         <button
                                             onClick={() => handleCopy(comp.code, comp._id)}
-                                            className="w-8 h-8 rounded bg-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/20 transition-all"
+                                            className="w-8 h-8 rounded bg-white/10 flex items-center justify-center text-gray-400 hover:text-yellow-500 hover:bg-yellow-500/10 transition-all border border-transparent hover:border-yellow-500/20"
                                             title="Copy Code"
                                         >
-                                            {copiedId === comp._id ? <FaCheck className="text-green-400" /> : <FaCopy />}
+                                            {copiedId === comp._id ? <FaCheck className="text-yellow-500" /> : <FaCopy />}
                                         </button>
                                     </div>
                                     <div className="mt-8 text-sm overflow-hidden flex-1 flex justify-center items-center">

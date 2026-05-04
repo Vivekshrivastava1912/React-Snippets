@@ -23,11 +23,13 @@ const userSlice = createSlice({
             state.mobile = action.payload?.mobile;
             state.verify_email = action.payload?.verify_email;
             state.last_login_date = action.payload?.last_login_date;
-           
+        },
+        updateCredit : (state, action) => {
+            state.credit = action.payload;
         }
     }
 })
 
-export const { setUserDetails } = userSlice.actions
+export const { setUserDetails, updateCredit } = userSlice.actions
 
 export default userSlice.reducer

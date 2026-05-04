@@ -52,13 +52,13 @@ function App() {
           },
           success: {
             iconTheme: {
-              primary: '#fff',
+              primary: '#eab308',
               secondary: '#000',
             },
           },
           error: {
             iconTheme: {
-              primary: '#fff',
+              primary: '#ef4444',
               secondary: '#000',
             },
           },

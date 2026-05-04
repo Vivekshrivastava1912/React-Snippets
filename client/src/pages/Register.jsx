@@ -55,23 +55,23 @@ const Register = () => {
   return (
     <section className='fixed inset-0 z-50 flex items-center justify-center bg-black p-4'>
       
-      <div className='bg-black w-full max-w-md p-8 rounded-md border border-white/10 relative'>
+      <div className='bg-black w-full max-w-md p-8 rounded-md border border-white/5 relative shadow-[0_0_50px_rgba(234,179,8,0.05)]'>
         
         <button 
           onClick={() => navigate("/")} 
-          className='absolute top-6 left-6 text-gray-500 hover:text-white transition-colors flex items-center gap-2 text-sm'
+          className='absolute top-6 left-6 text-gray-500 hover:text-yellow-500 transition-colors flex items-center gap-2 text-sm'
         >
           <IoArrowBack size={18}/> Back
         </button>
 
         <div className='text-center mb-8 mt-6'>
-            <h2 className='text-3xl font-bold text-white tracking-tight mb-1'>Register</h2>
+            <h2 className='text-3xl font-bold text-yellow-500 tracking-tight mb-1'>Register</h2>
             <p className='text-gray-500 text-xs uppercase tracking-widest'>Create your account</p>
         </div>
 
         <form onSubmit={handleSubmit} className='space-y-4'>
           <div className='space-y-1.5'>
-            <label htmlFor='name' className='block text-xs font-medium text-gray-400 ml-1'>Name</label>
+            <label htmlFor='name' className='block text-xs font-medium text-gray-400 ml-1 group-focus-within:text-yellow-500 transition-colors'>Name</label>
             <input 
               type="text"
               id='name'
@@ -79,27 +79,27 @@ const Register = () => {
               value={data.name}
               name='name'
               onChange={handleChange}
-              className='w-full px-4 py-3 rounded-sm bg-white/5 border border-white/10 text-white focus:border-white/30 outline-none transition-all'
+              className='w-full px-4 py-3 rounded-sm bg-white/5 border border-white/10 text-white focus:border-yellow-500/30 outline-none transition-all'
               placeholder='John Doe' 
             />
           </div>
 
           <div className='space-y-1.5'>
-            <label htmlFor='email' className='block text-xs font-medium text-gray-400 ml-1'>Email</label>
+            <label htmlFor='email' className='block text-xs font-medium text-gray-400 ml-1 group-focus-within:text-yellow-500 transition-colors'>Email</label>
             <input 
               type="email"
               id='email'
               value={data.email}
               name='email'
               onChange={handleChange}
-              className='w-full px-4 py-3 rounded-sm bg-white/5 border border-white/10 text-white focus:border-white/30 outline-none transition-all'
+              className='w-full px-4 py-3 rounded-sm bg-white/5 border border-white/10 text-white focus:border-yellow-500/30 outline-none transition-all'
               placeholder='name@example.com'
             />
           </div>
 
           <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
             <div className='space-y-1.5'>
-              <label htmlFor='password' title='Password' className='block text-xs font-medium text-gray-400 ml-1'>Password</label>
+              <label htmlFor='password' title='Password' className='block text-xs font-medium text-gray-400 ml-1 group-focus-within:text-yellow-500 transition-colors'>Password</label>
               <div className='relative flex items-center'>
                   <input 
                   type={showPassword ? "text" : "password"}
@@ -107,17 +107,17 @@ const Register = () => {
                   value={data.password}
                   name='password'
                   onChange={handleChange}
-                  className='w-full px-4 py-3 rounded-sm bg-white/5 border border-white/10 text-white focus:border-white/30 outline-none transition-all'
+                  className='w-full px-4 py-3 rounded-sm bg-white/5 border border-white/10 text-white focus:border-yellow-500/30 outline-none transition-all'
                   placeholder='••••••••' 
                   />
-                  <div onClick={() => setShowPassword(prev => !prev)} className='absolute right-3 cursor-pointer text-gray-500 hover:text-white'>
+                  <div onClick={() => setShowPassword(prev => !prev)} className='absolute right-3 cursor-pointer text-gray-500 hover:text-yellow-500'>
                       { showPassword ? <IoEyeOutline size={18}/> : <IoEyeOffOutline size={18}/> }
                   </div>
               </div>
             </div>
 
             <div className='space-y-1.5'>
-              <label htmlFor='confirmPassword' title='Confirm' className='block text-xs font-medium text-gray-400 ml-1'>Confirm</label>
+              <label htmlFor='confirmPassword' title='Confirm' className='block text-xs font-medium text-gray-400 ml-1 group-focus-within:text-yellow-500 transition-colors'>Confirm</label>
               <div className='relative flex items-center'>
                   <input 
                   type={showConfirmPassword ? "text" : "password"}
@@ -125,10 +125,10 @@ const Register = () => {
                   value={data.confirmPassword}
                   name='confirmPassword'
                   onChange={handleChange}
-                  className='w-full px-4 py-3 rounded-sm bg-white/5 border border-white/10 text-white focus:border-white/30 outline-none transition-all'
+                  className='w-full px-4 py-3 rounded-sm bg-white/5 border border-white/10 text-white focus:border-yellow-500/30 outline-none transition-all'
                   placeholder='••••••••' 
                   />
-                  <div onClick={() => setShowConfirmPassword(prev => !prev)} className='absolute right-3 cursor-pointer text-gray-500 hover:text-white'>
+                  <div onClick={() => setShowConfirmPassword(prev => !prev)} className='absolute right-3 cursor-pointer text-gray-500 hover:text-yellow-500'>
                       { showConfirmPassword ? <IoEyeOutline size={18}/> : <IoEyeOffOutline size={18}/> }
                   </div>
               </div>
@@ -139,14 +139,14 @@ const Register = () => {
             disabled={!valideValue} 
             className={`w-full py-3 rounded-sm font-bold text-sm uppercase tracking-wider transition-all mt-4
               ${valideValue 
-                ? "bg-white text-black hover:bg-gray-200" 
+                ? "bg-yellow-500 text-black hover:bg-yellow-400 shadow-[0_0_20px_rgba(234,179,8,0.2)]" 
                 : "bg-white/10 text-white/30 cursor-not-allowed"}`}
           >
             Create Account
           </button>
 
           <p className='text-center text-xs text-gray-500 mt-6'>
-            Already a member? <Link to={"/login"} className='text-white font-bold hover:underline ml-1'>
+            Already a member? <Link to={"/login"} className='text-yellow-500 font-bold hover:underline ml-1'>
               Login
             </Link>
           </p>
