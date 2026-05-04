@@ -9,6 +9,7 @@ import ResetPassword from "../pages/ResetPassword";
 import UserUpdate from "../pages/UserUpdate";
 import AddUserComponent from "../component/AddUserComponent";
 import Componentpage from "../pages/Componentpage";
+import EditComponent from "../pages/EditComponent";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: "components",
         element: <Componentpage />
+      },
+      {
+        path: "edit-component",
+        element: <EditComponent />
       }
     ]
   }

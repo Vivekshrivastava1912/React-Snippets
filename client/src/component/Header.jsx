@@ -27,8 +27,8 @@ const Header = () => {
           <Link
             to="/"
             className={`px-5 py-2 text-sm font-bold rounded-xl transition-all duration-300 ${location.pathname === "/"
-                ? "bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.15)]"
-                : "text-gray-500 hover:text-white hover:bg-white/10"
+              ? "bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.15)]"
+              : "text-gray-500 hover:text-white hover:bg-white/10"
               }`}
           >
             Home
@@ -37,8 +37,8 @@ const Header = () => {
           <Link
             to="/addsnippet"
             className={`px-5 py-2 text-sm font-bold rounded-xl transition-all duration-300 ${location.pathname === "/addsnippet"
-                ? "bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.15)]"
-                : "text-gray-500 hover:text-white hover:bg-white/10"
+              ? "bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.15)]"
+              : "text-gray-500 hover:text-white hover:bg-white/10"
               }`}
           >
             AI Lab
@@ -46,9 +46,9 @@ const Header = () => {
 
           <Link
             to="/components"
-            className={`px-5 py-2 text-sm font-bold rounded-xl transition-all duration-300 ${location.pathname === "/components"
-                ? "bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.15)]"
-                : "text-gray-500 hover:text-white hover:bg-white/10"
+            className={`px-5 py-2 text-sm font-bold rounded-xl transition-all duration-300 ${location.pathname === "/components" || location.pathname === "/edit-component"
+              ? "bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.15)]"
+              : "text-gray-500 hover:text-white hover:bg-white/10"
               }`}
           >
             Components

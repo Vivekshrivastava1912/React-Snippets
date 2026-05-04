@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import Axios from '../utils/Axios'; 
 import toast from 'react-hot-toast'; // Alert ki jagah Toast add kiya hai
 import SummaryApi from '../common/SummaryApi';
 
 const AddUserComponent = () => {
+    const location = useLocation();
     const [formData, setFormData] = useState({
-        title: '',
-        code: '',
+        title: location.state?.title || '',
+        code: location.state?.code || '',
         status: 'Public'
     });
     const [loading, setLoading] = useState(false);
