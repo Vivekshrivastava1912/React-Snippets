@@ -16,7 +16,7 @@ const app = express()
 
 
 app.use(cors({
-    origin: [process.env.FRONTEND_URL ],
+    origin: [process.env.FRONTEND_URL, "http://localhost:5173", "https://react-snippets-vivek.vercel.app"], // Add your expected production URL here
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"] 
 }));
@@ -41,13 +41,19 @@ app.get('/', (request, response) => {
 app.use('/api/user', userRouter)
 app.use('/api/usercode', userCodeRouter)
 app.use('/api/ai',aiRouter)
+// Connect to Database
+connectDB().catch((error) => {
+    console.log('Failed to connect to database', error)
+})
 
-const PORT = process.env.PORT || 8000
-
-connectDB().then(() => {
+// For local development
+if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 8000
     app.listen(PORT, () => {
         console.log(`Server is running on port ${PORT}`)
     })
-}).catch((error) => {
-    console.log('Failed to connect to database', error)
-})
+}
+
+// Export for Vercel
+export default app;
+
