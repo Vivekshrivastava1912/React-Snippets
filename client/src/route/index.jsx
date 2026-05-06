@@ -15,6 +15,7 @@ import Profile from "../pages/Profile";
 import AdminAllUsers from "../pages/AdminAllUsers";
 import AdminAllComponents from "../pages/AdminAllComponents";
 import SvgGen from "../pages/SvgGen";
+import AuthGuard from "../component/AuthGuard";
 
 const router = createBrowserRouter([
   {
@@ -47,43 +48,40 @@ const router = createBrowserRouter([
       },
       {
         path: "userdetailupdate",
-        element: <UserUpdate />
+        element: <AuthGuard><UserUpdate /></AuthGuard>
       },
       {
         path : "addsnippet",
-        element : <AddUserComponent/>
+        element : <AuthGuard><AddUserComponent/></AuthGuard>
       },
       {
         path: "components",
-        element: <Componentpage />
+        element: <AuthGuard><Componentpage /></AuthGuard>
       },
       {
         path: "edit-component",
-        element: <EditComponent />
+        element: <AuthGuard><EditComponent /></AuthGuard>
       },
       {
         path: "aicomponent-gen",
-        element: <AicomponentGen/>
+        element: <AuthGuard><AicomponentGen/></AuthGuard>
       },
       {
         path : "svgai-gen",
-        element : <SvgGen/>
-
+        element : <AuthGuard><SvgGen/></AuthGuard>
       },
-
       {
         path : "profile",
-        element : <Profile/>
+        element : <AuthGuard><Profile/></AuthGuard>
       },
       {
         path: "admin/all-users",
-        element: <AdminAllUsers />
+        element: <AuthGuard><AdminAllUsers /></AuthGuard>
       },
       {
         path: "admin/all-components",
-        element: <AdminAllComponents />
+        element: <AuthGuard><AdminAllComponents /></AuthGuard>
       }
-
     ]
   }
 ]);
