@@ -1,26 +1,52 @@
 import { getGroqChatCompletion } from '../config/grok.js';
+import UserModel from '../models/user.model.js';
 
 export async function grokChat(request, response) {
+    try {
+        const { prompt } = request.body;
+        const userId = request.userId;
 
-    try{
-        const{prompt} = request.body;
-        if(!prompt){
+        if (!prompt) {
             return response.status(400).json({
-                message : "prompt is required"
-            })
+                message: "prompt is required"
+            });
+        }
+
+        const user = await UserModel.findById(userId);
+
+ 
+
+            if ( !userId) {
+            return response.status(400).json({
+                success: false,
+                message: "login first to use this feature"
+            });
+        }
+
+        if ( user.credit < 20) {
+            return response.status(400).json({
+                success: false,
+                message: "you have not sufficient credit"
+            });
         }
 
         const grokResponse = await getGroqChatCompletion(prompt);
         const llmResponse = grokResponse.choices[0]?.message?.content || "";
 
+        // Deduct 20 credits
+        user.credit -= 20;
+        await user.save();
+
         return response.status(200).json({
-            success : true,
-            message : llmResponse
-        })
+            success: true,
+            message: llmResponse,
+            updatedCredits: user.credit
+        });
     }
-    catch(error){
+    catch (error) {
+        console.error("AI Generation Error:", error);
         return response.status(500).json({
-            message : "Internal server error"
-        })
+            message: "Internal server error"
+        });
     }
 }

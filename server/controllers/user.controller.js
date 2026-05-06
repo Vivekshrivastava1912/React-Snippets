@@ -555,3 +555,51 @@ export async function refreshToken(request, response) {
     }
 
 }
+
+//---------------------------------------------------------Admin: Get All Users---------------------------------------------------------//
+export async function getAllUsers(request, response) {
+    try {
+        const users = await UserModel.find().select('-password -refresh_token').sort({ createdAt: -1 });
+        return response.json({
+            message: "All users fetched successfully",
+            data: users,
+            success: true,
+            error: false
+        });
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        });
+    }
+}
+
+//---------------------------------------------------------Admin: Delete User---------------------------------------------------------//
+export async function deleteUser(request, response) {
+    try {
+        const { userId } = request.body;
+        
+        if (!userId) {
+            return response.status(400).json({
+                message: "User ID is required",
+                error: true,
+                success: false
+            });
+        }
+
+        await UserModel.findByIdAndDelete(userId);
+
+        return response.json({
+            message: "User deleted successfully",
+            success: true,
+            error: false
+        });
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        });
+    }
+}

@@ -88,3 +88,79 @@ export async function getUserCodes(request, response) {
         });
     }
 } 
+
+export async function getCodesForUser(request, response) {
+    try {
+        const userId = request.userId;
+        if (!userId) {
+            return response.status(401).json({
+                message: "Please login first",
+                success: false,
+                error: true
+            });
+        }
+        const codes = await UserCodeModel.find({ userId }).sort({ createdAt: -1 });
+        return response.json({
+            message: "User codes fetched successfully",
+            data: codes,
+            success: true,
+            error: false
+        });
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        });
+    }
+}
+
+//---------------------------------------------------------Admin: Get All Components---------------------------------------------------------//
+export async function getAllComponentsAdmin(request, response) {
+    try {
+        const codes = await UserCodeModel.find().populate('userId', 'name email').sort({ createdAt: -1 });
+
+        
+        return response.json({
+            message: "All components fetched successfully",
+            data: codes,
+            success: true,
+            error: false
+        });
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        });
+    }
+}
+
+//---------------------------------------------------------Delete Component---------------------------------------------------------//
+export async function deleteComponent(request, response) {
+    try {
+        const { componentId } = request.body;
+
+        if (!componentId) {
+            return response.status(400).json({
+                message: "Component ID is required",
+                error: true,
+                success: false
+            });
+        }
+
+        await UserCodeModel.findByIdAndDelete(componentId);
+
+        return response.json({
+            message: "Component deleted successfully",
+            success: true,
+            error: false
+        });
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        });
+    }
+}
