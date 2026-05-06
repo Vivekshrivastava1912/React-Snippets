@@ -1,7 +1,7 @@
 import ForgotPassword from "../pages/ForgotPassword"
 
 
-export const baseURL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000"
+export const baseURL = "https://react-snippets-bacend.vercel.app" 
 
 const SummaryApi = {
     register: {
