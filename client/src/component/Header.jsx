@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { toast } from 'react-hot-toast'
 import Axios from '../utils/Axios'
@@ -11,6 +11,7 @@ const Header = () => {
   const user = useSelector(state => state.user)
   const dispatch = useDispatch()
   const location = useLocation()
+  const navigate = useNavigate()
   const [showMenu, setShowMenu] = useState(false)
 
   // Route change hote hi menu band ho jaye
@@ -27,7 +28,7 @@ const Header = () => {
         toast.success("Logged out successfully");
         dispatch(setUserDetails(null));
         localStorage.clear();
-        window.location.href = "/";
+        navigate("/");
       }
     } catch (error) {
       toast.error("Logout failed");
