@@ -16,7 +16,7 @@ const app = express()
 
 
 app.use(cors({
-    origin: [process.env.FRONTEND_URL, "http://localhost:5173", "https://react-snippets-seven.vercel.app"], // Add your expected production URL here
+    origin: [process.env.FRONTEND_URL, "http://localhost:5173", "https://react-snippets-seven.vercel.app"].filter(Boolean),
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
 }));
