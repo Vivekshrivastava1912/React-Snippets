@@ -66,9 +66,9 @@ const UserDetails = ({ onClose }) => {
                 {/* Profile Section */}
                 <div className="space-y-4">
                     <h3 className="text-[10px] uppercase tracking-[0.2em] text-gray-500 mb-4">Profile Section</h3>
-                    <div 
+                    <div
                         onClick={() => { navigate('/userdetailupdate'); onClose(); }}
-                        className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-8 shadow-2xl cursor-pointer hover:border-white/30 hover:bg-white/[0.02] transition-all group"
+                        className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-8 shadow-2xl cursor-pointer hover:border-white/30 hover:bg-white/2 transition-all group"
                     >
                         <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-white text-black flex items-center justify-center text-4xl sm:text-6xl font-black shadow-[0_0_30px_rgba(255,255,255,0.1)] shrink-0 group-hover:scale-105 transition-transform">
                             {user.name?.charAt(0).toUpperCase()}
@@ -78,7 +78,7 @@ const UserDetails = ({ onClose }) => {
                                 <h2 className="text-2xl sm:text-4xl font-black capitalize">{user.name}</h2>
                                 <p className="text-gray-400 text-sm tracking-widest uppercase mt-2">Developer</p>
                             </div>
-                            
+
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full pt-4 border-t border-white/10">
                                 <DetailRow icon={<FaEnvelope />} label="Email" value={user.email} />
                                 <DetailRow icon={<FaPhone />} label="Mobile" value={user.mobile || "Not Linked"} />
@@ -91,7 +91,7 @@ const UserDetails = ({ onClose }) => {
                 {/* Premium Section */}
                 <div className="space-y-4">
                     <h3 className="text-[10px] uppercase tracking-[0.2em] text-gray-500 mb-4">Premium Section</h3>
-                    <div className="bg-gradient-to-br from-yellow-900/30 via-[#0a0a0a] to-[#0a0a0a] border border-yellow-500/30 rounded-xl p-6 sm:p-8 relative overflow-hidden shadow-[0_0_30px_rgba(234,179,8,0.05)]">
+                    <div className="bg-linear-to-br from-yellow-900/30 via-[#0a0a0a] to-[#0a0a0a] border border-yellow-500/30 rounded-xl p-6 sm:p-8 relative overflow-hidden shadow-[0_0_30px_rgba(234,179,8,0.05)]">
                         <div className="absolute -top-10 -right-10 p-8 opacity-10 rotate-12 pointer-events-none">
                             <FaCrown size={150} className="text-yellow-500" />
                         </div>

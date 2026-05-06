@@ -9,13 +9,13 @@ import * as LucideIcons from 'lucide-react';
 import * as FaIcons from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const scope = { 
-    React, 
+const scope = {
+    React,
     ...React,
-    ...LucideIcons, 
-    ...FaIcons, 
-    motion, 
-    AnimatePresence 
+    ...LucideIcons,
+    ...FaIcons,
+    motion,
+    AnimatePresence
 };
 
 const transformCode = (code) => {

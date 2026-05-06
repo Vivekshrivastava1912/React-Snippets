@@ -34,7 +34,15 @@ const SummaryApi = {
     },
     logout: {
         url: '/api/user/logout',
-        method: "get"
+        method: 'get'
+    },
+    allUsers: {
+        url: '/api/user/all-users',
+        method: 'get'
+    },
+    deleteUser: {
+        url: '/api/user/delete-user',
+        method: 'delete'
     },
     saveCode: {
         url: '/api/usercode/add-user-code',
@@ -43,6 +51,18 @@ const SummaryApi = {
     getUserCodes: {
         url: '/api/usercode/get-user-codes',
         method: 'get'
+    },
+    getCodesForUser: {
+        url: '/api/usercode/get-codes-for-user',
+        method: 'get'
+    },
+    allComponentsAdmin: {
+        url: '/api/usercode/all-components-admin',
+        method: 'get'
+    },
+    deleteComponentAdmin: {
+        url: '/api/usercode/delete-component-admin',
+        method: 'delete'
     },
     aiGeneration: {
         url: '/api/ai/grok',

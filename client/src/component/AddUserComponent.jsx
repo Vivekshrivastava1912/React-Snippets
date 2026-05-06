@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { LiveProvider, LiveEditor } from 'react-live';
 import { useLocation } from 'react-router-dom';
-import Axios from '../utils/Axios'; 
+import Axios from '../utils/Axios';
 import toast from 'react-hot-toast'; // Alert ki jagah Toast add kiya hai
 import SummaryApi from '../common/SummaryApi';
 
@@ -21,7 +22,7 @@ const AddUserComponent = () => {
         e.preventDefault();
 
         // Basic validation
-        if(!formData.title.trim() || !formData.code.trim()) {
+        if (!formData.title.trim() || !formData.code.trim()) {
             toast.error("Please fill all fields!");
             return;
         }
@@ -31,9 +32,9 @@ const AddUserComponent = () => {
         try {
             // Sahi format me axios request
             const response = await Axios({
-                ...SummaryApi.saveCode, 
+                ...SummaryApi.saveCode,
                 data: formData, // Yahan data me formData bhej rahe hain
-                withCredentials: true 
+                withCredentials: true
             });
 
             if (response.data.success) {
@@ -73,17 +74,22 @@ const AddUserComponent = () => {
                         />
                     </div>
 
-                    {/* Code Textarea */}
+                    {/* Code Editor */}
                     <div className="group">
                         <label className="block text-[11px] uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-yellow-500 transition-colors">Source Code</label>
-                        <textarea
-                            name="code"
-                            value={formData.code}
-                            onChange={handleChange}
-                            placeholder="// Paste your code here..."
-                            className="w-full h-64 bg-[#0a0a0a] border border-white/5 p-4 rounded-md outline-none focus:border-yellow-500/30 focus:ring-1 focus:ring-yellow-500/10 transition-all font-mono text-sm resize-none text-gray-300 placeholder:text-gray-800"
-                            required
-                        />
+                        <div className="w-full h-80 bg-[#0a0a0a] border border-white/5 rounded-md overflow-hidden focus-within:border-yellow-500/30 focus-within:ring-1 focus-within:ring-yellow-500/10 transition-all">
+                            <LiveProvider code={formData.code} onChange={newCode => setFormData({ ...formData, code: newCode })}>
+                                <div className="h-full overflow-auto custom-scrollbar">
+                                    <LiveEditor
+                                        className="font-mono text-sm min-h-full"
+                                        style={{
+                                            fontFamily: '"Fira Code", "Fira Mono", monospace',
+                                            backgroundColor: 'transparent',
+                                        }}
+                                    />
+                                </div>
+                            </LiveProvider>
+                        </div>
                     </div>
 
                     {/* Status & Submit Row */}
@@ -111,6 +117,22 @@ const AddUserComponent = () => {
                     </div>
                 </form>
             </div>
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                .custom-scrollbar::-webkit-scrollbar {
+                    width: 5px;
+                }
+                .custom-scrollbar::-webkit-scrollbar-track {
+                    background: transparent;
+                }
+                .custom-scrollbar::-webkit-scrollbar-thumb {
+                    background: rgba(255, 255, 255, 0.05);
+                    border-radius: 2px;
+                }
+                .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+                    background: rgba(255, 255, 255, 0.1);
+                }
+            `}} />
         </div>
     );
 };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, Navigate } from 'react-router-dom';
-import { LiveProvider, LivePreview, LiveError } from 'react-live';
+import { LiveProvider, LiveEditor, LivePreview, LiveError } from 'react-live';
 import * as LucideIcons from 'lucide-react';
 import * as FaIcons from 'react-icons/fa';
 import Axios from '../utils/Axios';
@@ -8,13 +8,13 @@ import toast from 'react-hot-toast';
 import SummaryApi from '../common/SummaryApi';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const scope = { 
-    React, 
+const scope = {
+    React,
     ...React,
-    ...LucideIcons, 
-    ...FaIcons, 
-    motion, 
-    AnimatePresence 
+    ...LucideIcons,
+    ...FaIcons,
+    motion,
+    AnimatePresence
 };
 
 const transformCode = (code) => {
@@ -22,7 +22,7 @@ const transformCode = (code) => {
     result = result.replace(/export\s+default\s+function\s+([a-zA-Z0-9_]+)/g, 'function $1');
     result = result.replace(/export\s+default\s+([a-zA-Z0-9_]+);?/g, '');
     result = result.replace(/export\s+(const|function|let|var)\s+/g, '$1 ');
-    
+
     result = result.replace(/\bfixed\b/g, 'absolute');
 
     if (result.includes('render(')) {
@@ -69,7 +69,7 @@ const EditComponent = () => {
 
     const handleFinalSave = async (e) => {
         e.preventDefault();
-        if(!title.trim() || !code.trim()) {
+        if (!title.trim() || !code.trim()) {
             toast.error("Please fill all fields!");
             return;
         }
@@ -77,9 +77,9 @@ const EditComponent = () => {
         setLoading(true);
         try {
             const response = await Axios({
-                ...SummaryApi.saveCode, 
+                ...SummaryApi.saveCode,
                 data: { title, code, status },
-                withCredentials: true 
+                withCredentials: true
             });
 
             if (response.data.success) {
@@ -105,13 +105,13 @@ const EditComponent = () => {
                         <p className="text-gray-500 text-sm mt-1">Live preview and modify "{title}"</p>
                     </div>
                     <div className="flex gap-4">
-                        <button 
+                        <button
                             onClick={() => navigate(-1)}
                             className="px-6 py-2 border border-white/20 rounded text-sm uppercase tracking-widest hover:bg-white/10 transition-colors"
                         >
                             Cancel
                         </button>
-                        <button 
+                        <button
                             onClick={() => setShowSaveModal(true)}
                             className="px-6 py-2 bg-yellow-500 text-black rounded text-sm uppercase tracking-widest font-bold hover:bg-yellow-400 transition-colors shadow-[0_0_20px_rgba(234,179,8,0.2)]"
                         >
@@ -120,68 +120,73 @@ const EditComponent = () => {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {/* Editor */}
-                    <div className="space-y-4">
-                        <label className="text-sm uppercase tracking-widest text-gray-500">Edit Source Code</label>
-                        <textarea
-                            value={code}
-                            onChange={(e) => setCode(e.target.value)}
-                            className="w-full h-150 bg-[#0a0a0a] border border-white/10 p-4 rounded-lg font-mono text-sm outline-none focus:border-yellow-500/30 text-gray-300 resize-none whitespace-pre transition-all"
-                            spellCheck="false"
-                        />
-                    </div>
-
-                    {/* Preview */}
-                    <div className="space-y-4">
-                        {/* Title and Zoom Controls in the same line */}
-                        <div className="flex justify-between items-center">
-                            <label className="text-sm uppercase tracking-widest text-gray-500">Live Preview</label>
-                            <div className="flex gap-2 items-center">
-                                <button 
-                                    onClick={() => setZoom(prev => Math.max(prev - 0.1, 0.3))}
-                                    className="w-8 h-8 flex items-center justify-center bg-white/5 hover:bg-yellow-500/10 border border-white/10 rounded text-gray-400 hover:text-yellow-500 transition-colors"
-                                >
-                                    -
-                                </button>
-                                <span className="text-[10px] text-yellow-500/50 uppercase tracking-tighter w-10 text-center font-mono">
-                                    {Math.round(zoom * 100)}%
-                                </span>
-                                <button 
-                                    onClick={() => setZoom(prev => Math.min(prev + 0.1, 2))}
-                                    className="w-8 h-8 flex items-center justify-center bg-white/5 hover:bg-yellow-500/10 border border-white/10 rounded text-gray-400 hover:text-yellow-500 transition-colors"
-                                >
-                                    +
-                                </button>
+                <LiveProvider code={code} scope={scope} transformCode={transformCode} noInline={true} onChange={setCode}>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        {/* Editor */}
+                        <div className="space-y-4">
+                            <label className="text-sm uppercase tracking-widest text-gray-500">Edit Source Code</label>
+                            <div className="w-full h-150 bg-[#0a0a0a] border border-white/10 rounded-lg overflow-hidden focus-within:border-yellow-500/30 transition-all">
+                                <div className="h-full overflow-auto custom-scrollbar">
+                                    <LiveEditor
+                                        className="font-mono text-sm min-h-full"
+                                        style={{
+                                            fontFamily: '"Fira Code", "Fira Mono", monospace',
+                                            backgroundColor: 'transparent',
+                                        }}
+                                    />
+                                </div>
                             </div>
                         </div>
 
-                        <div className="w-full h-150 bg-black border border-white/10 rounded-lg p-6 overflow-auto relative z-0 focus-within:border-yellow-500/20 transition-all" style={{ transform: 'translate3d(0,0,0)' }}>
-                            <LiveProvider code={code} scope={scope} transformCode={transformCode} noInline={true}>
-                                <div 
+                        {/* Preview */}
+                        <div className="space-y-4">
+                            {/* Title and Zoom Controls in the same line */}
+                            <div className="flex justify-between items-center">
+                                <label className="text-sm uppercase tracking-widest text-gray-500">Live Preview</label>
+                                <div className="flex gap-2 items-center">
+                                    <button
+                                        onClick={() => setZoom(prev => Math.max(prev - 0.1, 0.3))}
+                                        className="w-8 h-8 flex items-center justify-center bg-white/5 hover:bg-yellow-500/10 border border-white/10 rounded text-gray-400 hover:text-yellow-500 transition-colors"
+                                    >
+                                        -
+                                    </button>
+                                    <span className="text-[10px] text-yellow-500/50 uppercase tracking-tighter w-10 text-center font-mono">
+                                        {Math.round(zoom * 100)}%
+                                    </span>
+                                    <button
+                                        onClick={() => setZoom(prev => Math.min(prev + 0.1, 2))}
+                                        className="w-8 h-8 flex items-center justify-center bg-white/5 hover:bg-yellow-500/10 border border-white/10 rounded text-gray-400 hover:text-yellow-500 transition-colors"
+                                    >
+                                        +
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="w-full h-150 bg-black border border-white/10 rounded-lg p-6 overflow-auto relative z-0 focus-within:border-yellow-500/20 transition-all" style={{ transform: 'translate3d(0,0,0)' }}>
+                                <div
                                     className="min-h-full w-full flex justify-center items-start transition-transform duration-200 ease-out"
                                     style={{ transform: `scale(${zoom})`, transformOrigin: 'top center' }}
                                 >
                                     <LivePreview className="w-full" />
                                 </div>
                                 <LiveError className="text-red-400 text-xs mt-6 font-mono whitespace-pre-wrap bg-red-400/10 p-4 rounded border border-red-400/20" />
-                            </LiveProvider>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </LiveProvider>
             </div>
 
             {/* Modal Overlay */}
             {showSaveModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-6">
                     <div className="w-full max-w-xl bg-[#050505] border border-white/10 shadow-[0_0_25px_rgba(234,179,8,0.05)] p-8 rounded-lg relative">
-                        <button 
+                        <button
                             onClick={() => setShowSaveModal(false)}
                             className="absolute top-4 right-4 text-gray-500 hover:text-yellow-500 transition-colors"
                         >
                             <LucideIcons.X size={20} />
                         </button>
-                        
+
                         <h2 className="text-xl font-light tracking-widest mb-8 border-b border-white/5 pb-3 uppercase text-center text-yellow-500">
                             Save Snippet
                         </h2>

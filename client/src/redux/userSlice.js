@@ -8,7 +8,7 @@ const initialValue = {
     mobile : "",
     verify_email : "",
     last_login_date : "",
-   
+    role: "", 
 }
 
 const userSlice = createSlice({
@@ -23,6 +23,7 @@ const userSlice = createSlice({
             state.mobile = action.payload?.mobile;
             state.verify_email = action.payload?.verify_email;
             state.last_login_date = action.payload?.last_login_date;
+            state.role = action.payload?.role; 
         },
         updateCredit : (state, action) => {
             state.credit = action.payload;

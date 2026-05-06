@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LiveProvider, LivePreview, LiveError } from 'react-live';
+import { LiveProvider, LiveEditor, LivePreview, LiveError } from 'react-live';
 import * as LucideIcons from 'lucide-react';
 import * as FaIcons from 'react-icons/fa';
 import Axios from '../utils/Axios';
@@ -71,8 +71,8 @@ const AicomponentGen = () => {
             return;
         }
 
-        if (user.credit < 5) {
-            toast.error("Insufficient credits! You need at least 5 credits.");
+        if (user.credit < 20) {
+            toast.error("you have not sufficient credit");
             return;
         }
 
@@ -118,12 +118,12 @@ const AicomponentGen = () => {
         <div className="min-h-screen bg-[#030303] text-white relative overflow-hidden font-sans">
             {/* Background Decorations */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-white/[0.02] rounded-full blur-[120px]"></div>
-                <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-white/[0.02] rounded-full blur-[120px]"></div>
-                <div className="absolute inset-0 bg-[radial-gradient(#1a1a1a_1px,transparent_1px)] [background-size:32px_32px] opacity-[0.4]"></div>
+                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-white/2 rounded-full blur-[120px]"></div>
+                <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-white/2 rounded-full blur-[120px]"></div>
+                <div className="absolute inset-0 bg-[radial-gradient(#1a1a1a_1px,transparent_1px)] bg-size-[32px_32px] opacity-[0.4]"></div>
             </div>
 
-            <div className="max-w-[1600px] mx-auto px-4 md:px-6 py-6 md:py-10 relative z-10 flex flex-col lg:h-screen lg:max-h-screen">
+            <div className="max-w-400 mx-auto px-4 md:px-6 py-6 md:py-10 relative z-10 flex flex-col lg:h-screen lg:max-h-screen">
                 {/* Header Section */}
                 <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 gap-4 md:gap-6 shrink-0">
                     <div className="space-y-1">
@@ -140,7 +140,7 @@ const AicomponentGen = () => {
 
                     <div className="flex items-center gap-4 w-full md:w-auto">
                         {/* User Credits Display */}
-                        <div className="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-sm h-[44px]">
+                        <div className="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-sm h-11">
                             <LucideIcons.Coins className="w-4 h-4 text-yellow-500" />
                             <div className="flex flex-col leading-none">
                                 <span className="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Credits</span>
@@ -150,7 +150,7 @@ const AicomponentGen = () => {
 
                         <button
                             onClick={handleContinueToSave}
-                            className="group flex-1 md:flex-none flex items-center justify-center gap-3 bg-yellow-500 text-black px-8 py-3 rounded-sm text-sm font-bold transition-all hover:bg-yellow-400 active:scale-95 h-[44px] shadow-[0_0_15px_rgba(234,179,8,0.2)]"
+                            className="group flex-1 md:flex-none flex items-center justify-center gap-3 bg-yellow-500 text-black px-8 py-3 rounded-sm text-sm font-bold transition-all hover:bg-yellow-400 active:scale-95 h-11 shadow-[0_0_15px_rgba(234,179,8,0.2)]"
                         >
                             <LucideIcons.ArrowRightCircle className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                             Continue to Save
@@ -159,81 +159,84 @@ const AicomponentGen = () => {
                 </header>
 
                 {/* Main Workspace */}
-                <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-0 mb-8 overflow-y-auto lg:overflow-hidden">
-                    {/* Editor Panel */}
-                    <section className="flex flex-col bg-[#0a0a0a] border border-white/10 rounded-sm overflow-hidden shadow-2xl h-[400px] lg:h-full">
-                        <div className="flex items-center justify-between px-5 py-4 border-b border-white/5 bg-white/[0.02]">
-                            <div className="flex items-center gap-2">
-                                <div className="flex gap-1.5 mr-2">
-                                    <div className="w-2.5 h-2.5 rounded-full bg-red-500/20 border border-red-500/40"></div>
-                                    <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/20 border border-yellow-500/40"></div>
-                                    <div className="w-2.5 h-2.5 rounded-full bg-green-500/20 border border-green-500/40"></div>
+                <LiveProvider code={code} scope={scope} transformCode={transformCode} noInline={true} onChange={setCode}>
+                    <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-0 mb-8 overflow-y-auto lg:overflow-hidden">
+                        {/* Editor Panel */}
+                        <section className="flex flex-col bg-[#0a0a0a] border border-white/10 rounded-sm overflow-hidden shadow-2xl h-100 lg:h-full">
+                            <div className="flex items-center justify-between px-5 py-4 border-b border-white/5 bg-white/2">
+                                <div className="flex items-center gap-2">
+                                    <div className="flex gap-1.5 mr-2">
+                                        <div className="w-2.5 h-2.5 rounded-full bg-red-500/20 border border-red-500/40"></div>
+                                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/20 border border-yellow-500/40"></div>
+                                        <div className="w-2.5 h-2.5 rounded-full bg-green-500/20 border border-green-500/40"></div>
+                                    </div>
+                                    <span className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold">Source Code</span>
                                 </div>
-                                <span className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold">Source Code</span>
+                                <button
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(code);
+                                        toast.success("Copied to clipboard!");
+                                    }}
+                                    className="text-[10px] uppercase tracking-widest text-gray-400 hover:text-white flex items-center gap-2 transition-colors group"
+                                >
+                                    <LucideIcons.Copy className="w-3.5 h-3.5 group-hover:scale-110" />
+                                    Copy
+                                </button>
                             </div>
-                            <button
-                                onClick={() => {
-                                    navigator.clipboard.writeText(code);
-                                    toast.success("Copied to clipboard!");
-                                }}
-                                className="text-[10px] uppercase tracking-widest text-gray-400 hover:text-white flex items-center gap-2 transition-colors group"
-                            >
-                                <LucideIcons.Copy className="w-3.5 h-3.5 group-hover:scale-110" />
-                                Copy
-                            </button>
-                        </div>
 
-                        <div className="flex-1 relative group overflow-hidden">
-                            <textarea
-                                value={code}
-                                onChange={(e) => setCode(e.target.value)}
-                                className="w-full h-full bg-transparent p-4 md:p-6 font-mono text-[12px] md:text-[13px] leading-relaxed outline-none text-gray-300 resize-none scrollbar-thin scrollbar-thumb-white/5 hover:scrollbar-thumb-white/10 transition-all"
-                                spellCheck="false"
-                            />
-                            {loading && (
-                                <div className="absolute inset-0 bg-black/60 backdrop-blur-[4px] flex items-center justify-center z-20">
-                                    <div className="flex flex-col items-center gap-5">
-                                        <div className="relative">
-                                            <div className="w-12 h-12 border-2 border-white/5 rounded-full"></div>
-                                            <div className="absolute top-0 left-0 w-12 h-12 border-t-2 border-white rounded-full animate-spin"></div>
-                                        </div>
-                                        <div className="flex flex-col items-center">
-                                            <p className="text-[10px] uppercase tracking-[0.3em] text-white font-bold animate-pulse">Processing Prompt</p>
+                            <div className="flex-1 relative group overflow-hidden">
+                                <div className="h-full overflow-auto custom-scrollbar">
+                                    <LiveEditor
+                                        className="font-mono text-[12px] md:text-[13px] leading-relaxed outline-none min-h-full"
+                                        style={{
+                                            fontFamily: '"Fira Code", "Fira Mono", monospace',
+                                            backgroundColor: 'transparent',
+                                        }}
+                                    />
+                                </div>
+                                {loading && (
+                                    <div className="absolute inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center z-20">
+                                        <div className="flex flex-col items-center gap-5">
+                                            <div className="relative">
+                                                <div className="w-12 h-12 border-2 border-white/5 rounded-full"></div>
+                                                <div className="absolute top-0 left-0 w-12 h-12 border-t-2 border-white rounded-full animate-spin"></div>
+                                            </div>
+                                            <div className="flex flex-col items-center">
+                                                <p className="text-[10px] uppercase tracking-[0.3em] text-white font-bold animate-pulse">Processing Prompt</p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            )}
-                        </div>
-                    </section>
-
-                    {/* Preview Panel */}
-                    <section className="flex flex-col bg-black border border-white/10 rounded-sm overflow-hidden shadow-2xl h-[400px] lg:h-full">
-                        <div className="flex items-center justify-between px-5 py-4 border-b border-white/5 bg-white/[0.02]">
-                            <div className="flex items-center gap-2">
-                                <LucideIcons.Play className="w-3.5 h-3.5 text-green-500" />
-                                <span className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold">Live Rendering</span>
+                                )}
                             </div>
-                            <div className="flex items-center gap-4">
-                                <div className="flex items-center gap-2 bg-white/5 px-2 py-1 rounded-sm border border-white/5">
-                                    <button
-                                        onClick={() => setZoom(prev => Math.max(prev - 0.1, 0.5))}
-                                        className="w-5 h-5 flex items-center justify-center hover:bg-white/10 rounded-sm transition-colors"
-                                    >
-                                        <LucideIcons.Minus size={12} />
-                                    </button>
-                                    <span className="text-[10px] text-gray-500 font-mono w-8 text-center">{Math.round(zoom * 100)}%</span>
-                                    <button
-                                        onClick={() => setZoom(prev => Math.min(prev + 0.1, 1.5))}
-                                        className="w-5 h-5 flex items-center justify-center hover:bg-white/10 rounded-sm transition-colors"
-                                    >
-                                        <LucideIcons.Plus size={12} />
-                                    </button>
+                        </section>
+
+                        {/* Preview Panel */}
+                        <section className="flex flex-col bg-black border border-white/10 rounded-sm overflow-hidden shadow-2xl h-100 lg:h-full">
+                            <div className="flex items-center justify-between px-5 py-4 border-b border-white/5 bg-white/2">
+                                <div className="flex items-center gap-2">
+                                    <LucideIcons.Play className="w-3.5 h-3.5 text-green-500" />
+                                    <span className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold">Live Rendering</span>
+                                </div>
+                                <div className="flex items-center gap-4">
+                                    <div className="flex items-center gap-2 bg-white/5 px-2 py-1 rounded-sm border border-white/5">
+                                        <button
+                                            onClick={() => setZoom(prev => Math.max(prev - 0.1, 0.5))}
+                                            className="w-5 h-5 flex items-center justify-center hover:bg-white/10 rounded-sm transition-colors"
+                                        >
+                                            <LucideIcons.Minus size={12} />
+                                        </button>
+                                        <span className="text-[10px] text-gray-500 font-mono w-8 text-center">{Math.round(zoom * 100)}%</span>
+                                        <button
+                                            onClick={() => setZoom(prev => Math.min(prev + 0.1, 1.5))}
+                                            className="w-5 h-5 flex items-center justify-center hover:bg-white/10 rounded-sm transition-colors"
+                                        >
+                                            <LucideIcons.Plus size={12} />
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div className="flex-1 overflow-auto bg-[rgba(255,255,255,0.01)] relative p-4 md:p-8 custom-scrollbar">
-                            <LiveProvider code={code} scope={scope} transformCode={transformCode} noInline={true}>
+                            <div className="flex-1 overflow-auto bg-[rgba(255,255,255,0.01)] relative p-4 md:p-8 custom-scrollbar">
                                 <div
                                     className="min-h-full w-full flex justify-center items-center transition-transform duration-300 ease-out"
                                     style={{ transform: `scale(${zoom})`, transformOrigin: 'center center' }}
@@ -241,19 +244,19 @@ const AicomponentGen = () => {
                                     <LivePreview className="w-full" />
                                 </div>
                                 <LiveError className="text-red-400 text-[11px] mt-8 font-mono whitespace-pre-wrap bg-red-500/5 p-5 border border-red-500/10 rounded-sm backdrop-blur-md" />
-                            </LiveProvider>
-                        </div>
-                    </section>
-                </div>
+                            </div>
+                        </section>
+                    </div>
+                </LiveProvider>
 
                 {/* Prompt Section - Mobile friendly */}
                 <div className="shrink-0 pb-6">
                     <div className="relative max-w-4xl mx-auto group">
-                        <div className="absolute -inset-1 bg-gradient-to-r from-white/20 to-white/5 rounded-sm blur opacity-25 group-focus-within:opacity-50 transition duration-500"></div>
+                        <div className="absolute -inset-1 bg-linear-to-r from-white/20 to-white/5 rounded-sm blur opacity-25 group-focus-within:opacity-50 transition duration-500"></div>
                         <div className="relative flex flex-col md:flex-row items-stretch md:items-center gap-3 bg-[#0a0a0a] border border-white/10 p-2 rounded-sm shadow-2xl focus-within:border-white/30 transition-all duration-300">
                             <div className="hidden md:flex pl-4 items-center gap-3 text-gray-500">
                                 <LucideIcons.Sparkles className="w-5 h-5 text-white/40" />
-                                <div className="w-[1px] h-6 bg-white/10"></div>
+                                <div className="w-px h-6 bg-white/10"></div>
                             </div>
                             <input
                                 type="text"
@@ -266,7 +269,7 @@ const AicomponentGen = () => {
                             <button
                                 onClick={handleGenerate}
                                 disabled={loading}
-                                className="relative flex items-center justify-center gap-2 bg-white text-black px-7 py-3.5 rounded-sm text-xs font-bold uppercase tracking-[0.1em] transition-all hover:bg-gray-100 disabled:opacity-50"
+                                className="relative flex items-center justify-center gap-2 bg-white text-black px-7 py-3.5 rounded-sm text-xs font-bold uppercase tracking-widest transition-all hover:bg-gray-100 disabled:opacity-50"
                             >
                                 <span>{loading ? 'Generating...' : 'Generate UI'}</span>
                                 {!loading && <LucideIcons.Zap className="w-4 h-4 fill-current" />}

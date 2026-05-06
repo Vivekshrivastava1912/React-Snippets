@@ -23,7 +23,7 @@ const Home = () => {
 
       {/* 1. HERO SECTION */}
       <section className="relative pt-20 md:pt-20 pb-16 md:pb-24 px-6 overflow-hidden border-b border-white/5">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-100 opacity-[0.15] bg-linear-to-br from-blue-600 via-transparent to-purple-600 blur-[100px] pointer-events-none"></div>
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-100 opacity-[0.15] bg-linear-to-br from-yellow-600 via-transparent to-yellow-900/40 blur-[100px] pointer-events-none"></div>
 
         <div className="container mx-auto max-w-7xl relative z-10 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
 
@@ -84,11 +84,11 @@ const Home = () => {
                 <div className="p-6 font-mono text-[11px] sm:text-xs md:text-sm leading-relaxed text-gray-400 overflow-x-auto bg-black/40 pb-16">
                   <div className="flex"><span className="text-yellow-500">import</span>&nbsp;React&nbsp;<span className="text-yellow-500">from</span>&nbsp;<span className="text-green-400">'react'</span>;</div>
                   <br />
-                  <div className="flex"><span className="text-yellow-500">export const</span>&nbsp;<span className="text-blue-400">Button</span>&nbsp;=&nbsp;()&nbsp;<span className="text-yellow-500">=&gt;</span>&nbsp;&#123;</div>
+                  <div className="flex"><span className="text-yellow-500">export const</span>&nbsp;<span className="text-yellow-200">Button</span>&nbsp;=&nbsp;()&nbsp;<span className="text-yellow-500">=&gt;</span>&nbsp;&#123;</div>
                   <div className="flex">&nbsp;&nbsp;<span className="text-yellow-500">return</span>&nbsp;(</div>
-                  <div className="flex">&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span className="text-blue-400">button</span>&nbsp;<span className="text-yellow-300">className</span>=<span className="text-green-400">"px-6 py-2 bg-yellow-500 text-black rounded-sm"</span>&gt;</div>
+                  <div className="flex">&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span className="text-yellow-400">button</span>&nbsp;<span className="text-yellow-300">className</span>=<span className="text-green-400">"px-6 py-2 bg-yellow-500 text-black rounded-sm"</span>&gt;</div>
                   <div className="flex">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Initialize Process</div>
-                  <div className="flex">&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span className="text-blue-400">button</span>&gt;</div>
+                  <div className="flex">&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span className="text-yellow-400">button</span>&gt;</div>
                   <div className="flex">&nbsp;&nbsp;);</div>
                   <div className="flex">&#125;;</div>
                 </div>
@@ -181,7 +181,7 @@ const FeatureCard = ({ icon, title, description, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="p-8 md:p-10 bg-[#050505] border border-white/5 rounded-sm hover:border-yellow-500/30 cursor-pointer hover:bg-yellow-500/[0.02] transition-all group flex flex-col justify-between h-full"
+      className="p-8 md:p-10 bg-[#050505] border border-white/5 rounded-sm hover:border-yellow-500/30 cursor-pointer hover:bg-yellow-500/2 transition-all group flex flex-col justify-between h-full"
     >
       <div>
         <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-sm flex items-center justify-center mb-8 group-hover:bg-yellow-500 transition-all duration-300">

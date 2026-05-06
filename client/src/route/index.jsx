@@ -11,6 +11,9 @@ import AddUserComponent from "../component/AddUserComponent";
 import Componentpage from "../pages/Componentpage";
 import EditComponent from "../pages/EditComponent";
 import AicomponentGen from "../pages/AicomponentGen";
+import Profile from "../pages/Profile";
+import AdminAllUsers from "../pages/AdminAllUsers";
+import AdminAllComponents from "../pages/AdminAllComponents";
 
 const router = createBrowserRouter([
   {
@@ -60,7 +63,20 @@ const router = createBrowserRouter([
       {
         path: "aicomponent-gen",
         element: <AicomponentGen/>
+      },
+      {
+        path : "profile",
+        element : <Profile/>
+      },
+      {
+        path: "admin/all-users",
+        element: <AdminAllUsers />
+      },
+      {
+        path: "admin/all-components",
+        element: <AdminAllComponents />
       }
+
     ]
   }
 ]);
