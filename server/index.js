@@ -16,16 +16,16 @@ const app = express()
 
 
 app.use(cors({
-    origin: [process.env.FRONTEND_URL, "http://localhost:5173", "https://react-snippets-vivek.vercel.app"], // Add your expected production URL here
+    origin: [process.env.FRONTEND_URL, "http://localhost:5173", "https://react-snippets-seven.vercel.app"], // Add your expected production URL here
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"] 
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
 }));
 
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
-app.use(morgan('dev')) 
+app.use(morgan('dev'))
 app.use(helmet({
     crossOriginResourcePolicy: false
 }))
@@ -40,7 +40,7 @@ app.get('/', (request, response) => {
 
 app.use('/api/user', userRouter)
 app.use('/api/usercode', userCodeRouter)
-app.use('/api/ai',aiRouter)
+app.use('/api/ai', aiRouter)
 // Connect to Database
 connectDB().catch((error) => {
     console.log('Failed to connect to database', error)
@@ -56,4 +56,4 @@ if (process.env.NODE_ENV !== 'production') {
 
 // Export for Vercel
 export default app;
-
+
