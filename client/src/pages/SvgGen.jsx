@@ -47,7 +47,7 @@ const transformCode = (code) => {
     return result;
 };
 
-const AicomponentGen = () => {
+const SvgGen = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector(state => state.user);
@@ -82,7 +82,7 @@ const AicomponentGen = () => {
 
         try {
             const response = await Axios({
-                ...SummaryApi.aiGeneration,
+                ...SummaryApi.svgAiGeneration,
                 data: { prompt }
             });
 
@@ -107,13 +107,6 @@ const AicomponentGen = () => {
         }
     };
 
-    const handleContinueToSave = () => {
-        if (code === '// Your AI generated code will appear here...' || !code.trim()) {
-            toast.error("No code to save!");
-            return;
-        }
-        navigate('/addsnippet', { state: { code, title: prompt.slice(0, 30) } });
-    };
 
     return (
         <div className="min-h-screen bg-[#030303] text-white relative overflow-hidden font-sans">
@@ -129,18 +122,19 @@ const AicomponentGen = () => {
                 <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 gap-4 md:gap-6 shrink-0">
                     <div className="space-y-1">
                         <div className="flex items-center gap-3">
-                            <div className="p-2 bg-white/5 border border-white/10 rounded-sm">
-                                <LucideIcons.Cpu className="text-white w-5 h-5" />
+                            {/* Icon badal kar Shapes ya PenTool kar diya hai jo SVG ke liye better hai */}
+                            <div className="p-2 bg-yellow-500/10 border border-yellow-500/20 rounded-sm">
+                                <LucideIcons.Shapes className="text-yellow-500 w-5 h-5" />
                             </div>
-                            <h1 className="text-xl md:text-3xl font-bold tracking-tight text-white">AI Component Lab</h1>
+                            <h1 className="text-xl md:text-3xl font-bold tracking-tight text-white">AI SVG Studio</h1>
                         </div>
                         <p className="text-gray-400 text-[12px] md:text-sm font-light max-w-xl">
-                            Instant UI generation powered by AI. Describe your component and get production-ready code with live preview.
+                            Generate custom vector graphics and icons instantly. Describe your vision and get clean, production-ready SVG code.
                         </p>
                     </div>
 
                     <div className="flex items-center gap-4 w-full md:w-auto">
-                        {/* User Credits Display */}
+                        {/* User Credits Display - Isse same rakha hai consistency ke liye */}
                         <div className="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-sm h-11">
                             <LucideIcons.Coins className="w-4 h-4 text-yellow-500" />
                             <div className="flex flex-col leading-none">
@@ -149,13 +143,7 @@ const AicomponentGen = () => {
                             </div>
                         </div>
 
-                        <button
-                            onClick={handleContinueToSave}
-                            className="group flex-1 md:flex-none flex items-center justify-center gap-3 bg-yellow-500 text-black px-8 py-3 rounded-sm text-sm font-bold transition-all hover:bg-yellow-400 active:scale-95 h-11 shadow-[0_0_15px_rgba(234,179,8,0.2)]"
-                        >
-                            <LucideIcons.ArrowRightCircle className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                            Continue to Save
-                        </button>
+                        {/* Aap yahan ek "New SVG" button bhi add kar sakte hain agar zaroorat ho */}
                     </div>
                 </header>
 
@@ -251,9 +239,15 @@ const AicomponentGen = () => {
                                     className="min-h-full w-full flex justify-center items-center transition-transform duration-300 ease-out"
                                     style={{ transform: `scale(${zoom})`, transformOrigin: 'center center' }}
                                 >
-                                    <LivePreview className="w-full" />
+                                    {code.trim().toLowerCase().startsWith('<svg') ? (
+                                        <div dangerouslySetInnerHTML={{ __html: code }} className="w-full h-full flex justify-center items-center [&>svg]:max-w-[30%] [&>svg]:max-h-[60%] [&>svg]:w-auto [&>svg]:h-auto" />
+                                    ) : (
+                                        <LivePreview className="w-full" />
+                                    )}
                                 </div>
-                                <LiveError className="text-red-400 text-[11px] mt-8 font-mono whitespace-pre-wrap bg-red-500/5 p-5 border border-red-500/10 rounded-sm backdrop-blur-md" />
+                                {code.trim().toLowerCase().startsWith('<svg') ? null : (
+                                    <LiveError className="text-red-400 text-[11px] mt-8 font-mono whitespace-pre-wrap bg-red-500/5 p-5 border border-red-500/10 rounded-sm backdrop-blur-md" />
+                                )}
                             </div>
                         </section>
                     </div>
@@ -273,7 +267,7 @@ const AicomponentGen = () => {
                                 value={prompt}
                                 onChange={(e) => setPrompt(e.target.value)}
                                 onKeyDown={(e) => e.key === 'Enter' && handleGenerate()}
-                                placeholder="Describe any component..."
+                                placeholder="Describe any SVG..."
                                 className="flex-1 bg-transparent border-none outline-none py-3 md:py-4 px-2 text-[14px] md:text-[15px] text-gray-200 placeholder:text-gray-600 font-light"
                             />
                             <button
@@ -320,4 +314,4 @@ const AicomponentGen = () => {
     );
 };
 
-export default AicomponentGen;
+export default SvgGen;

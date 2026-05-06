@@ -1,7 +1,7 @@
 import ForgotPassword from "../pages/ForgotPassword"
 
 
-export const baseURL = "http://localhost:8000"
+export const baseURL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000"
 
 const SummaryApi = {
     register: {
@@ -66,6 +66,10 @@ const SummaryApi = {
     },
     aiGeneration: {
         url: '/api/ai/grok',
+        method: 'post'
+    },
+    svgAiGeneration: {
+        url : '/api/ai/svggrok',
         method: 'post'
     }
 }

@@ -14,6 +14,7 @@ import AicomponentGen from "../pages/AicomponentGen";
 import Profile from "../pages/Profile";
 import AdminAllUsers from "../pages/AdminAllUsers";
 import AdminAllComponents from "../pages/AdminAllComponents";
+import SvgGen from "../pages/SvgGen";
 
 const router = createBrowserRouter([
   {
@@ -64,6 +65,12 @@ const router = createBrowserRouter([
         path: "aicomponent-gen",
         element: <AicomponentGen/>
       },
+      {
+        path : "svgai-gen",
+        element : <SvgGen/>
+
+      },
+
       {
         path : "profile",
         element : <Profile/>

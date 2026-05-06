@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaCode, FaLock, FaRobot, FaArrowRight, FaGlobe, FaCopy, FaCheck } from 'react-icons/fa';
+import { FaCode, FaLock, FaRobot, FaArrowRight, FaGlobe, FaCopy, FaCheck, FaShapes } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 
@@ -108,7 +108,7 @@ const Home = () => {
             <h3 className="text-3xl md:text-5xl font-black tracking-tighter">Everything you need.</h3>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <FeatureCard
               icon={<FaGlobe size={20} />}
               title="Global Components"
@@ -126,6 +126,12 @@ const Home = () => {
               title="AI Lab Workspace"
               description="An intuitive workspace to write, manage, and refine your React components before publishing."
               onClick={() => navigate('/aicomponent-gen')}
+            />
+            <FeatureCard
+              icon={<FaShapes size={20} />}
+              title="AI SVG Studio"
+              description="Generate custom vector graphics and icons instantly. Describe your vision and get production-ready SVG code."
+              onClick={() => navigate('/svgai-gen')}
             />
           </div>
         </div>

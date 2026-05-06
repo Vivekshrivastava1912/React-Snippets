@@ -53,6 +53,7 @@ const Header = () => {
         <nav className='hidden md:flex items-center gap-3 bg-[#0a0a0a] border border-white/5 p-1.5 rounded-2xl'>
           <Link to="/" className={`px-5 py-2 text-sm font-bold rounded-xl transition-all ${location.pathname === "/" ? "bg-yellow-500 text-black shadow-[0_0_20px_rgba(234,179,8,0.2)]" : "text-gray-500 hover:text-white"}`}>Home</Link>
           <Link to="/aicomponent-gen" className={`px-5 py-2 text-sm font-bold rounded-xl transition-all ${location.pathname === "/aicomponent-gen" ? "bg-yellow-500 text-black shadow-[0_0_20px_rgba(234,179,8,0.2)]" : "text-gray-500 hover:text-white"}`}>AI Lab</Link>
+          <Link to="/svgai-gen" className={`px-5 py-2 text-sm font-bold rounded-xl transition-all ${location.pathname === "/svgai-gen" ? "bg-yellow-500 text-black shadow-[0_0_20px_rgba(234,179,8,0.2)]" : "text-gray-500 hover:text-white"}`}>SVG AI</Link>
           <Link to="/components" className={`px-5 py-2 text-sm font-bold rounded-xl transition-all ${location.pathname === "/components" ? "bg-yellow-500 text-black shadow-[0_0_20px_rgba(234,179,8,0.2)]" : "text-gray-500 hover:text-white"}`}>Components</Link>
         </nav>
 
