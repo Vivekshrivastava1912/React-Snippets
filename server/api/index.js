@@ -8,6 +8,8 @@ import connectDB from '../config/connectDB.js'
 import userRouter from '../route/user.route.js'
 import userCodeRouter from '../route/usercode.route.js'
 import aiRouter from '../route/grok.route.js'
+import svgRouter from '../route/svg.route.js'
+
 
 
 dotenv.config()
@@ -42,6 +44,8 @@ app.get('/', (request, response) => {
 app.use('/api/user', userRouter)
 app.use('/api/usercode', userCodeRouter)
 app.use('/api/ai', aiRouter)
+app.use('/api/svg', svgRouter)
+
 // Connect to Database
 connectDB().catch((error) => {
     console.log('Failed to connect to database', error)
