@@ -148,9 +148,11 @@ const Header = () => {
 
           <div className='flex flex-col gap-3 overflow-y-auto'>
             <Link to="/" className='p-3 bg-white/5 rounded-md text-md font-bold text-white active:bg-yellow-500 active:text-black'>Home</Link>
-            <Link to="/aicomponent-gen" className='p-3 bg-white/5 rounded-md text-md font-bold text-white active:bg-yellow-500 active:text-black'>AI Lab</Link>
+             <Link to="/svgai-gen" className='p-3 bg-white/5 rounded-md text-md font-bold text-white active:bg-yellow-500 active:text-black'>Generate SVGs</Link>
+            <Link to="/aicomponent-gen" className='p-3 bg-white/5 rounded-md text-md font-bold text-white active:bg-yellow-500 active:text-black'>Generate Components</Link>
             <Link to="/explore-svgs" className='p-3 bg-white/5 rounded-md text-md font-bold text-white active:bg-yellow-500 active:text-black'>Explore SVGs</Link>
-            <Link to="/components" className='p-3 bg-white/5 rounded-md text-md font-bold text-white active:bg-yellow-500 active:text-black'>Components</Link>
+           
+            <Link to="/components" className='p-3 bg-white/5 rounded-md text-md font-bold text-white active:bg-yellow-500 active:text-black'>Explore Components</Link>
             <Link to="/mysvgs" className='p-3 bg-white/5 rounded-md text-md font-bold text-white active:bg-yellow-500 active:text-black'>My SVGs</Link>
             <Link to="/profile" className='p-3 bg-white/5 rounded-md text-md font-bold text-white active:bg-yellow-500 active:text-black'>My Profile</Link>
 
