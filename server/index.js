@@ -18,10 +18,21 @@ const app = express()
 
 
 app.use(cors({
-    origin: [process.env.FRONTEND_URL, "http://localhost:5173", "https://react-snippets-seven.vercel.app"].filter(Boolean),
+    origin: (origin, callback) => {
+        const allowedOrigins = ["https://react-snippets-seven.vercel.app", "http://localhost:5173", process.env.FRONTEND_URL];
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "Cookie", "X-Requested-With"]
 }));
+
+// Explicitly handle OPTIONS preflight
+app.options('*', cors());
 
 
 app.use(express.json())
