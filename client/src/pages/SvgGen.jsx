@@ -55,7 +55,10 @@ const SvgGen = () => {
     const [code, setCode] = useState('');
     const [loading, setLoading] = useState(false);
     const [zoom, setZoom] = useState(1);
-    const [previewTheme, setPreviewTheme] = useState('dark');
+    const [previewTheme, setPreviewTheme] = useState('light');
+    const [title, setTitle] = useState('');
+    const [isSaving, setIsSaving] = useState(false);
+
 
     useEffect(() => {
         if (!document.getElementById('tailwind-cdn')) {
@@ -106,6 +109,44 @@ const SvgGen = () => {
             setLoading(false);
         }
     };
+    
+    const handleSave = async () => {
+        if (!code.trim()) {
+            toast.error("Nothing to save!");
+            return;
+        }
+        if (!title.trim()) {
+            toast.error("Please enter a title for your SVG!");
+            return;
+        }
+
+        setIsSaving(true);
+        const savingToast = toast.loading("Saving your SVG...");
+
+        try {
+            const response = await Axios({
+                ...SummaryApi.saveSvg,
+                data: {
+                    svgCode: code,
+                    title,
+                    status: 'Public', // Default to public
+                    theme: previewTheme
+                }
+            });
+
+            if (response.data.success) {
+                toast.success("SVG saved successfully!", { id: savingToast });
+                setTitle('');
+            } else {
+                toast.error(response.data.message || "Failed to save SVG.", { id: savingToast });
+            }
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Something went wrong", { id: savingToast });
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
 
 
     return (
@@ -142,9 +183,26 @@ const SvgGen = () => {
                                 <span className="text-sm font-mono text-white">{user.credit || 0}</span>
                             </div>
                         </div>
-
-                        {/* Aap yahan ek "New SVG" button bhi add kar sakte hain agar zaroorat ho */}
+                        
+                        <div className="flex items-center gap-2">
+                            <input 
+                                type="text"
+                                placeholder="SVG Title..."
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                className="bg-white/5 border border-white/10 px-3 py-2 rounded-sm h-11 text-sm outline-none focus:border-yellow-500/50 transition-all w-32 md:w-48"
+                            />
+                            <button
+                                onClick={handleSave}
+                                disabled={isSaving || !code}
+                                className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded-sm h-11 transition-all disabled:opacity-50 font-bold text-xs uppercase tracking-widest"
+                            >
+                                <LucideIcons.Save className="w-4 h-4" />
+                                {isSaving ? 'Saving...' : 'Save'}
+                            </button>
+                        </div>
                     </div>
+
                 </header>
 
                 {/* Main Workspace */}

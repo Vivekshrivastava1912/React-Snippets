@@ -71,6 +71,26 @@ const SummaryApi = {
     svgAiGeneration: {
         url : '/api/ai/svggrok',
         method: 'post'
+    },
+    saveSvg: {
+        url: '/api/svg/add-svg',
+        method: 'post'
+    },
+    getUserSvgs: {
+        url: '/api/svg/get-svgs-for-user',
+        method: 'get'
+    },
+    getPublicSvgs: {
+        url: '/api/svg/get-svgs',
+        method: 'get'
+    },
+    allSvgsAdmin: {
+        url: '/api/svg/all-svgs-admin',
+        method: 'get'
+    },
+    deleteSvgAdmin: {
+        url: '/api/svg/delete-svg-admin',
+        method: 'delete'
     }
 }
 

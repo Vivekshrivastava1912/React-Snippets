@@ -60,6 +60,10 @@ const UserDetails = ({ onClose }) => {
                         <Link to="/components" onClick={onClose} className="p-4 bg-white/5 border border-white/5 rounded-md hover:bg-white/10 transition-colors font-bold flex items-center justify-between text-gray-300 hover:text-white">
                             Components
                         </Link>
+                        <Link to="/mysvgs" onClick={onClose} className="p-4 bg-white/5 border border-white/5 rounded-md hover:bg-white/10 transition-colors font-bold flex items-center justify-between text-gray-300 hover:text-white">
+                            My SVGs
+                        </Link>
+
                     </div>
                 </div>
 
@@ -114,6 +118,24 @@ const UserDetails = ({ onClose }) => {
                         </div>
                     </div>
                 </div>
+
+                {/* Admin Specific Links if applicable */}
+                {(user.role === 'admin' || user.role === 'ADMIN') && (
+                    <div className="space-y-4">
+                        <h3 className="text-[10px] uppercase tracking-[0.2em] text-gray-500 mb-4">Admin Controls</h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <Link to="/admin/all-users" onClick={onClose} className="p-4 bg-yellow-500/5 border border-yellow-500/20 rounded-md hover:bg-yellow-500/10 transition-colors font-bold flex items-center justify-between text-yellow-500">
+                                Visit All Users
+                            </Link>
+                            <Link to="/admin/all-components" onClick={onClose} className="p-4 bg-yellow-500/5 border border-yellow-500/20 rounded-md hover:bg-yellow-500/10 transition-colors font-bold flex items-center justify-between text-yellow-500">
+                                Visit All Components
+                            </Link>
+                            <Link to="/admin/all-svgs" onClick={onClose} className="p-4 bg-yellow-500/5 border border-yellow-500/20 rounded-md hover:bg-yellow-500/10 transition-colors font-bold flex items-center justify-between text-yellow-500">
+                                Visit All SVGs
+                            </Link>
+                        </div>
+                    </div>
+                )}
 
                 {/* Footer Actions */}
                 <div className="pb-10 pt-4">

@@ -5,7 +5,9 @@ import { toast } from 'react-hot-toast'
 import Axios from '../utils/Axios'
 import SummaryApi from '../common/SummaryApi'
 import { setUserDetails } from '../redux/userSlice'
-import { FaUserCircle, FaSignOutAlt, FaUsers, FaLaptopCode } from 'react-icons/fa'
+import { FaUserCircle, FaSignOutAlt, FaUsers, FaLaptopCode, FaShapes } from 'react-icons/fa'
+import * as LucideIcons from 'lucide-react'
+
 
 const Header = () => {
   const user = useSelector(state => state.user)
@@ -55,6 +57,7 @@ const Header = () => {
           <Link to="/" className={`px-5 py-2 text-sm font-bold rounded-xl transition-all ${location.pathname === "/" ? "bg-yellow-500 text-black shadow-[0_0_20px_rgba(234,179,8,0.2)]" : "text-gray-500 hover:text-white"}`}>Home</Link>
           <Link to="/aicomponent-gen" className={`px-5 py-2 text-sm font-bold rounded-xl transition-all ${location.pathname === "/aicomponent-gen" ? "bg-yellow-500 text-black shadow-[0_0_20px_rgba(234,179,8,0.2)]" : "text-gray-500 hover:text-white"}`}>AI Lab</Link>
           <Link to="/svgai-gen" className={`px-5 py-2 text-sm font-bold rounded-xl transition-all ${location.pathname === "/svgai-gen" ? "bg-yellow-500 text-black shadow-[0_0_20px_rgba(234,179,8,0.2)]" : "text-gray-500 hover:text-white"}`}>SVG AI</Link>
+          <Link to="/explore-svgs" className={`px-5 py-2 text-sm font-bold rounded-xl transition-all ${location.pathname === "/explore-svgs" ? "bg-yellow-500 text-black shadow-[0_0_20px_rgba(234,179,8,0.2)]" : "text-gray-500 hover:text-white"}`}>SVGs</Link>
           <Link to="/components" className={`px-5 py-2 text-sm font-bold rounded-xl transition-all ${location.pathname === "/components" ? "bg-yellow-500 text-black shadow-[0_0_20px_rgba(234,179,8,0.2)]" : "text-gray-500 hover:text-white"}`}>Components</Link>
         </nav>
 
@@ -87,6 +90,10 @@ const Header = () => {
                     <Link to="/profile" className='flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:bg-yellow-500 hover:text-black font-semibold rounded-xl transition-all group'>
                       <FaUserCircle className="text-gray-400 group-hover:text-black transition-colors" size={16} /> My Profile
                     </Link>
+                    <Link to="/mysvgs" className='flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:bg-yellow-500 hover:text-black font-semibold rounded-xl transition-all group'>
+                      <LucideIcons.Shapes className="text-gray-400 group-hover:text-black transition-colors" size={16} /> My SVGs
+                    </Link>
+
 
                     {(user.role === 'admin' || user.role === 'ADMIN') && (
                       <>
@@ -98,6 +105,10 @@ const Header = () => {
                         <Link to="/admin/all-components" className='flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:bg-yellow-500 hover:text-black font-semibold rounded-xl transition-all group'>
                           <FaLaptopCode className="text-gray-400 group-hover:text-black transition-colors" size={16} /> Visit All Components
                         </Link>
+                        <Link to="/admin/all-svgs" className='flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:bg-yellow-500 hover:text-black font-semibold rounded-xl transition-all group'>
+                          <LucideIcons.Shapes className="text-gray-400 group-hover:text-black transition-colors" size={16} /> Visit All SVGs
+                        </Link>
+
                       </>
                     )}
                   </div>
@@ -138,14 +149,19 @@ const Header = () => {
           <div className='flex flex-col gap-3 overflow-y-auto'>
             <Link to="/" className='p-3 bg-white/5 rounded-md text-md font-bold text-white active:bg-yellow-500 active:text-black'>Home</Link>
             <Link to="/aicomponent-gen" className='p-3 bg-white/5 rounded-md text-md font-bold text-white active:bg-yellow-500 active:text-black'>AI Lab</Link>
+            <Link to="/explore-svgs" className='p-3 bg-white/5 rounded-md text-md font-bold text-white active:bg-yellow-500 active:text-black'>Explore SVGs</Link>
             <Link to="/components" className='p-3 bg-white/5 rounded-md text-md font-bold text-white active:bg-yellow-500 active:text-black'>Components</Link>
+            <Link to="/mysvgs" className='p-3 bg-white/5 rounded-md text-md font-bold text-white active:bg-yellow-500 active:text-black'>My SVGs</Link>
             <Link to="/profile" className='p-3 bg-white/5 rounded-md text-md font-bold text-white active:bg-yellow-500 active:text-black'>My Profile</Link>
+
 
             {(user.role === 'admin' || user.role === 'ADMIN') && (
               <>
                 <div className='h-px bg-white/10 my-2'></div>
                 <Link to="/admin/all-users" className='p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-md text-md font-bold text-yellow-500'>Visit All Users</Link>
                 <Link to="/admin/all-components" className='p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-md text-md font-bold text-yellow-500'>Visit All Components</Link>
+                <Link to="/admin/all-svgs" className='p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-md text-md font-bold text-yellow-500'>Visit All SVGs</Link>
+
               </>
             )}
 

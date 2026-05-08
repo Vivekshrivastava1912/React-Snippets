@@ -15,6 +15,10 @@ import Profile from "../pages/Profile";
 import AdminAllUsers from "../pages/AdminAllUsers";
 import AdminAllComponents from "../pages/AdminAllComponents";
 import SvgGen from "../pages/SvgGen";
+import SvgPage from "../pages/SvgPage";
+import AdminAllSvgs from "../pages/AdminAllSvgs";
+import ExploreSvgs from "../pages/ExploreSvgs";
+
 import AuthGuard from "../component/AuthGuard";
 
 const router = createBrowserRouter([
@@ -81,7 +85,20 @@ const router = createBrowserRouter([
       {
         path: "admin/all-components",
         element: <AuthGuard><AdminAllComponents /></AuthGuard>
+      },
+      {
+        path: "mysvgs",
+        element: <AuthGuard><SvgPage /></AuthGuard>
+      },
+      {
+        path: "explore-svgs",
+        element: <ExploreSvgs />
+      },
+      {
+        path: "admin/all-svgs",
+        element: <AuthGuard><AdminAllSvgs /></AuthGuard>
       }
+
     ]
   }
 ]);
