@@ -19,6 +19,11 @@ const svgSchema = new mongoose.Schema({
         enum: ["Public", "Private"],
         default: "Public"
     },
+    theme: {
+        type: String,
+        enum: ["light", "dark"],
+        default: "light"
+    }
 }, { timestamps: true });
 
 svgSchema.index({ title: "text", svgCode: "text" });

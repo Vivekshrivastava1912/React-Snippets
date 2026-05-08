@@ -4,7 +4,7 @@ import SvgModel from "../models/svg.model.js";
 export async function saveSvg(request, response) {
     try {
         const userId = request.userId;
-        const { svgCode, title, status } = request.body;
+        const { svgCode, title, status, theme } = request.body;
 
         if (!userId) {
             return response.status(401).json({
@@ -35,7 +35,8 @@ export async function saveSvg(request, response) {
             userId: userId,
             svgCode: svgCode,
             title: title,
-            status: status
+            status: status,
+            theme: theme || 'light'
         }
         const svg = await SvgModel.create(payload)
 
