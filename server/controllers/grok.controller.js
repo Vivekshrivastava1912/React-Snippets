@@ -16,7 +16,7 @@ export async function grokChat(request, response) {
         if (!user || user.credit < 20) {
             return response.status(400).json({
                 success: false,
-                message: "you have not sufficient credit"
+                message: "you have not sufficient credit..."
             });
         }
 

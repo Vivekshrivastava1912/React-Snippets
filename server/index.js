@@ -31,7 +31,7 @@ app.use(cors({
     allowedHeaders: ["Content-Type", "Authorization", "Cookie", "X-Requested-With"]
 }));
 
-// Explicitly handle OPTIONS preflight
+
 app.options('*', cors());
 
 
