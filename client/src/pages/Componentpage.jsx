@@ -48,6 +48,8 @@ const Componentpage = () => {
     const [search, setSearch] = useState('');
     const [loading, setLoading] = useState(false);
     const [copiedId, setCopiedId] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 20;
     const navigate = useNavigate();
 
     // Tailwind CDN load karne ke liye useEffect taaki preview me classes chalein
@@ -70,6 +72,7 @@ const Componentpage = () => {
 
             if (response.data.success) {
                 setComponents(response.data.data);
+                setCurrentPage(1); // Reset to first page on search
             }
         } catch (error) {
             console.error("Error fetching components:", error);
@@ -92,6 +95,17 @@ const Componentpage = () => {
         setCopiedId(id);
         toast.success("Code copied to clipboard!");
         setTimeout(() => setCopiedId(null), 2000);
+    };
+
+    // Pagination Logic
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = components.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(components.length / itemsPerPage);
+
+    const paginate = (pageNumber) => {
+        setCurrentPage(pageNumber);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     return (
@@ -131,52 +145,106 @@ const Componentpage = () => {
                         <p className="text-gray-600 text-sm mt-2">Try adjusting your search query.</p>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {components.map((comp) => (
-                            <div key={comp._id} className="bg-[#0a0a0a] border border-white/10 rounded-xl overflow-hidden hover:border-yellow-500/20 transition-all duration-300 group hover:shadow-[0_0_30px_rgba(234,179,8,0.02)] flex flex-col">
-                                <div className="p-5 border-b border-white/5 flex justify-between items-start bg-white/2">
-                                    <div>
-                                        <h3 className="text-lg font-bold tracking-tight capitalize group-hover:text-yellow-500 text-gray-200 transition-colors">
-                                            {comp.title}
-                                        </h3>
-                                        <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-1 font-bold">
-                                            {new Date(comp.createdAt).toLocaleDateString()} {comp.userId?.name ? `• by ${comp.userId.name}` : ''}
-                                        </p>
+                    <>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {currentItems.map((comp) => (
+                                <div key={comp._id} className="bg-[#0a0a0a] border border-white/10 rounded-xl overflow-hidden hover:border-yellow-500/20 transition-all duration-300 group hover:shadow-[0_0_30px_rgba(234,179,8,0.02)] flex flex-col">
+                                    <div className="p-5 border-b border-white/5 flex justify-between items-start bg-white/2">
+                                        <div>
+                                            <h3 className="text-lg font-bold tracking-tight capitalize group-hover:text-yellow-500 text-gray-200 transition-colors">
+                                                {comp.title}
+                                            </h3>
+                                            <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-1 font-bold">
+                                                {new Date(comp.createdAt).toLocaleDateString()} {comp.userId?.name ? `• by ${comp.userId.name}` : ''}
+                                            </p>
+                                        </div>
+                                        <div className="bg-yellow-500/10 text-yellow-500 text-[9px] px-2 py-1 rounded uppercase tracking-widest font-bold border border-yellow-500/20">
+                                            {comp.status}
+                                        </div>
                                     </div>
-                                    <div className="bg-yellow-500/10 text-yellow-500 text-[9px] px-2 py-1 rounded uppercase tracking-widest font-bold border border-yellow-500/20">
-                                        {comp.status}
+
+                                    <div className="p-5 flex-1 relative bg-black min-h-62.5 flex flex-col">
+                                        <div className="absolute top-3 right-3 z-10 flex gap-2">
+                                            <button
+                                                onClick={() => navigate('/edit-component', { state: { title: comp.title, code: comp.code } })}
+                                                className="w-8 h-8 rounded bg-white/10 flex items-center justify-center text-gray-400 hover:text-yellow-500 hover:bg-yellow-500/10 transition-all border border-transparent hover:border-yellow-500/20"
+                                                title="Edit Component"
+                                            >
+                                                <FaIcons.FaEdit />
+                                            </button>
+                                            <button
+                                                onClick={() => handleCopy(comp.code, comp._id)}
+                                                className="w-8 h-8 rounded bg-white/10 flex items-center justify-center text-gray-400 hover:text-yellow-500 hover:bg-yellow-500/10 transition-all border border-transparent hover:border-yellow-500/20"
+                                                title="Copy Code"
+                                            >
+                                                {copiedId === comp._id ? <FaCheck className="text-yellow-500" /> : <FaCopy />}
+                                            </button>
+                                        </div>
+                                        <div className="mt-8 text-sm overflow-hidden flex-1 flex justify-center items-center">
+                                            <LiveProvider code={comp.code} scope={scope} transformCode={transformCode} noInline={true}>
+                                                <div className="w-full flex justify-center items-center">
+                                                    <LivePreview className="w-full max-h-64 overflow-y-auto flex justify-center items-center" />
+                                                </div>
+                                                <LiveError className="text-red-400 text-xs mt-4 font-mono whitespace-pre-wrap" />
+                                            </LiveProvider>
+                                        </div>
                                     </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Pagination Controls */}
+                        {totalPages > 1 && (
+                            <div className="flex justify-center items-center gap-4 mt-12 pb-6">
+                                <button
+                                    onClick={() => paginate(currentPage - 1)}
+                                    disabled={currentPage === 1}
+                                    className="px-4 py-2 bg-[#0a0a0a] border border-white/10 rounded-sm text-sm font-bold uppercase tracking-widest hover:border-yellow-500/50 disabled:opacity-30 disabled:hover:border-white/10 transition-all"
+                                >
+                                    Prev
+                                </button>
+                                
+                                <div className="flex items-center gap-2">
+                                    {[...Array(totalPages)].map((_, index) => {
+                                        const pageNum = index + 1;
+                                        if (
+                                            pageNum === 1 ||
+                                            pageNum === totalPages ||
+                                            (pageNum >= currentPage - 1 && pageNum <= currentPage + 1)
+                                        ) {
+                                            return (
+                                                <button
+                                                    key={pageNum}
+                                                    onClick={() => paginate(pageNum)}
+                                                    className={`w-10 h-10 flex items-center justify-center rounded-sm text-xs font-bold transition-all border ${
+                                                        currentPage === pageNum
+                                                            ? 'bg-yellow-500 text-black border-yellow-500 shadow-[0_0_20px_rgba(234,179,8,0.3)]'
+                                                            : 'bg-[#0a0a0a] border-white/10 text-gray-400 hover:border-yellow-500/50'
+                                                    }`}
+                                                >
+                                                    {pageNum}
+                                                </button>
+                                            );
+                                        } else if (
+                                            (pageNum === currentPage - 2 && pageNum > 1) ||
+                                            (pageNum === currentPage + 2 && pageNum < totalPages)
+                                        ) {
+                                            return <span key={pageNum} className="text-gray-600">...</span>;
+                                        }
+                                        return null;
+                                    })}
                                 </div>
 
-                                <div className="p-5 flex-1 relative bg-black min-h-62.5 flex flex-col">
-                                    <div className="absolute top-3 right-3 z-10 flex gap-2">
-                                        <button
-                                            onClick={() => navigate('/edit-component', { state: { title: comp.title, code: comp.code } })}
-                                            className="w-8 h-8 rounded bg-white/10 flex items-center justify-center text-gray-400 hover:text-yellow-500 hover:bg-yellow-500/10 transition-all border border-transparent hover:border-yellow-500/20"
-                                            title="Edit Component"
-                                        >
-                                            <FaIcons.FaEdit />
-                                        </button>
-                                        <button
-                                            onClick={() => handleCopy(comp.code, comp._id)}
-                                            className="w-8 h-8 rounded bg-white/10 flex items-center justify-center text-gray-400 hover:text-yellow-500 hover:bg-yellow-500/10 transition-all border border-transparent hover:border-yellow-500/20"
-                                            title="Copy Code"
-                                        >
-                                            {copiedId === comp._id ? <FaCheck className="text-yellow-500" /> : <FaCopy />}
-                                        </button>
-                                    </div>
-                                    <div className="mt-8 text-sm overflow-hidden flex-1 flex justify-center items-center">
-                                        <LiveProvider code={comp.code} scope={scope} transformCode={transformCode} noInline={true}>
-                                            <div className="w-full flex justify-center items-center">
-                                                <LivePreview className="w-full max-h-64 overflow-y-auto flex justify-center items-center" />
-                                            </div>
-                                            <LiveError className="text-red-400 text-xs mt-4 font-mono whitespace-pre-wrap" />
-                                        </LiveProvider>
-                                    </div>
-                                </div>
+                                <button
+                                    onClick={() => paginate(currentPage + 1)}
+                                    disabled={currentPage === totalPages}
+                                    className="px-4 py-2 bg-[#0a0a0a] border border-white/10 rounded-sm text-sm font-bold uppercase tracking-widest hover:border-yellow-500/50 disabled:opacity-30 disabled:hover:border-white/10 transition-all"
+                                >
+                                    Next
+                                </button>
                             </div>
-                        ))}
-                    </div>
+                        )}
+                    </>
                 )}
             </div>
         </div>

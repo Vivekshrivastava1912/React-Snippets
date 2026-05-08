@@ -20,26 +20,23 @@ const scope = {
 
 const transformCode = (code) => {
     if (!code) return '';
+    // Remove imports
     let result = code.replace(/import\s+(?:[\w\s{},*]+\s+from\s+)?['"][^'"]+['"]\s*;?/g, '');
+    // Remove exports but keep the declarations
     result = result.replace(/export\s+default\s+function\s+([a-zA-Z0-9_]+)/g, 'function $1');
     result = result.replace(/export\s+default\s+([a-zA-Z0-9_]+);?/g, '');
     result = result.replace(/export\s+(const|function|let|var)\s+/g, '$1 ');
 
-    if (result.includes('render(')) {
-        return result;
-    }
+    // logic to find the main component and render it
+    if (!result.includes('render(')) {
+        const componentMatch = result.match(/(?:const|function)\s+([A-Z][a-zA-Z0-9_]*)/);
+        const componentName = componentMatch ? componentMatch[1] : null;
 
-    let componentName = '';
-    const componentRegex = /(?:const|let|var|function)\s+([A-Z][a-zA-Z0-9_]*)\s*(?:=|\()/g;
-    let match;
-    while ((match = componentRegex.exec(result)) !== null) {
-        componentName = match[1];
-    }
-
-    if (componentName) {
-        result += `\nrender(<${componentName} />);`;
-    } else {
-        result = `render(<>\n${result}\n</>);`;
+        if (componentName) {
+            result += `\nrender(<${componentName} />);`;
+        } else {
+            result = `render(<>\n${result}\n</>);`;
+        }
     }
     return result;
 };
@@ -49,7 +46,9 @@ const ExploreSvgs = () => {
     const [search, setSearch] = useState('');
     const [loading, setLoading] = useState(false);
     const [copiedId, setCopiedId] = useState(null);
-    const [cardThemes, setCardThemes] = useState({}); // Stores theme per SVG ID
+    const [cardThemes, setCardThemes] = useState({}); 
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 20;
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -71,7 +70,7 @@ const ExploreSvgs = () => {
 
             if (response.data.success) {
                 setSvgs(response.data.data);
-                // Initialize themes from database
+                setCurrentPage(1);
                 const initialThemes = {};
                 response.data.data.forEach(svg => {
                     initialThemes[svg._id] = svg.theme || 'light';
@@ -106,6 +105,16 @@ const ExploreSvgs = () => {
         setCopiedId(id);
         toast.success("SVG Code copied!");
         setTimeout(() => setCopiedId(null), 2000);
+    };
+
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = svgs.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(svgs.length / itemsPerPage);
+
+    const paginate = (pageNumber) => {
+        setCurrentPage(pageNumber);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     return (
@@ -145,8 +154,9 @@ const ExploreSvgs = () => {
                         <p className="text-gray-600 text-sm mt-2">Be the first to share a beautiful SVG!</p>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {svgs.map((svg) => (
+                    <>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {currentItems.map((svg) => (
                             <div key={svg._id} className="bg-[#0a0a0a] border border-white/10 rounded-xl overflow-hidden hover:border-yellow-500/20 transition-all duration-300 group hover:shadow-[0_0_30px_rgba(234,179,8,0.02)] flex flex-col">
                                 <div className="p-5 border-b border-white/5 flex justify-between items-start bg-white/2">
                                     <div>
@@ -162,7 +172,7 @@ const ExploreSvgs = () => {
                                     </div>
                                 </div>
 
-                                <div className="p-5 flex-1 relative bg-black min-h-62.5 flex flex-col">
+                                <div className="p-5 flex-1 relative bg-black min-h-[250px] flex flex-col">
                                     <div className="absolute top-3 right-3 z-10 flex gap-2">
                                         <button
                                             onClick={() => toggleCardTheme(svg._id)}
@@ -179,24 +189,77 @@ const ExploreSvgs = () => {
                                             {copiedId === svg._id ? <FaCheck size={12} className="text-yellow-500" /> : <FaCopy size={12} />}
                                         </button>
                                     </div>
-                                    <div className={`mt-8 text-sm overflow-hidden flex-1 flex justify-center items-center transition-colors duration-300 ${cardThemes[svg._id] === 'light' ? 'bg-[#f0f0f0]' : 'bg-black'}`}>
+                                    <div className={`mt-8 text-sm overflow-hidden flex-1 flex justify-center items-center transition-colors duration-300 ${cardThemes[svg._id] === 'light' ? 'bg-[#f0f0f0]' : 'bg-[#0a0a0a]'}`}>
                                         {svg.svgCode.trim().toLowerCase().startsWith('<svg') ? (
                                             <div 
                                                 dangerouslySetInnerHTML={{ __html: svg.svgCode }} 
-                                                className="w-full h-full flex justify-center items-center [&>svg]:max-w-[100%] [&>svg]:max-h-[200px] [&>svg]:w-auto [&>svg]:h-auto" 
+                                                className="w-full h-full flex justify-center items-center [&>svg]:max-w-[90%] [&>svg]:max-h-[180px] [&>svg]:w-auto [&>svg]:h-auto" 
                                             />
                                         ) : (
                                             <LiveProvider code={svg.svgCode} scope={scope} transformCode={transformCode} noInline={true}>
-                                                <div className="w-full flex justify-center items-center">
-                                                    <LivePreview className="w-full max-h-64 overflow-y-auto flex justify-center items-center" />
+                                                <div className="w-full flex flex-col justify-center items-center">
+                                                    <LivePreview className="w-full flex justify-center items-center" />
+                                                    <LiveError className="text-[10px] text-red-500 mt-2 p-2 bg-red-500/10 rounded" />
                                                 </div>
                                             </LiveProvider>
                                         )}
                                     </div>
                                 </div>
                             </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+
+                        {totalPages > 1 && (
+                            <div className="flex justify-center items-center gap-4 mt-12 pb-6">
+                                <button
+                                    onClick={() => paginate(currentPage - 1)}
+                                    disabled={currentPage === 1}
+                                    className="px-4 py-2 bg-[#0a0a0a] border border-white/10 rounded-sm text-sm font-bold uppercase tracking-widest hover:border-yellow-500/50 disabled:opacity-30 disabled:hover:border-white/10 transition-all"
+                                >
+                                    Prev
+                                </button>
+                                
+                                <div className="flex items-center gap-2">
+                                    {[...Array(totalPages)].map((_, index) => {
+                                        const pageNum = index + 1;
+                                        if (
+                                            pageNum === 1 ||
+                                            pageNum === totalPages ||
+                                            (pageNum >= currentPage - 1 && pageNum <= currentPage + 1)
+                                        ) {
+                                            return (
+                                                <button
+                                                    key={pageNum}
+                                                    onClick={() => paginate(pageNum)}
+                                                    className={`w-10 h-10 flex items-center justify-center rounded-sm text-xs font-bold transition-all border ${
+                                                        currentPage === pageNum
+                                                            ? 'bg-yellow-500 text-black border-yellow-500 shadow-[0_0_20px_rgba(234,179,8,0.3)]'
+                                                            : 'bg-[#0a0a0a] border-white/10 text-gray-400 hover:border-yellow-500/50'
+                                                    }`}
+                                                >
+                                                    {pageNum}
+                                                </button>
+                                            );
+                                        } else if (
+                                            (pageNum === currentPage - 2 && pageNum > 1) ||
+                                            (pageNum === currentPage + 2 && pageNum < totalPages)
+                                        ) {
+                                            return <span key={pageNum} className="text-gray-600">...</span>;
+                                        }
+                                        return null;
+                                    })}
+                                </div>
+
+                                <button
+                                    onClick={() => paginate(currentPage + 1)}
+                                    disabled={currentPage === totalPages}
+                                    className="px-4 py-2 bg-[#0a0a0a] border border-white/10 rounded-sm text-sm font-bold uppercase tracking-widest hover:border-yellow-500/50 disabled:opacity-30 disabled:hover:border-white/10 transition-all"
+                                >
+                                    Next
+                                </button>
+                            </div>
+                        )}
+                    </>
                 )}
             </div>
         </div>
