@@ -172,7 +172,7 @@ const ExploreSvgs = () => {
                                     </div>
                                 </div>
 
-                                <div className="p-5 flex-1 relative bg-black min-h-[250px] flex flex-col">
+                                <div className="p-5 flex-1 relative bg-black min-h-62.5 flex flex-col">
                                     <div className="absolute top-3 right-3 z-10 flex gap-2">
                                         <button
                                             onClick={() => toggleCardTheme(svg._id)}
@@ -193,7 +193,7 @@ const ExploreSvgs = () => {
                                         {svg.svgCode.trim().toLowerCase().startsWith('<svg') ? (
                                             <div 
                                                 dangerouslySetInnerHTML={{ __html: svg.svgCode }} 
-                                                className="w-full h-full flex justify-center items-center [&>svg]:max-w-[90%] [&>svg]:max-h-[180px] [&>svg]:w-auto [&>svg]:h-auto" 
+                                                className="w-full h-full flex justify-center items-center [&>svg]:max-w-[90%] [&>svg]:max-h-45 [&>svg]:w-auto [&>svg]:h-auto" 
                                             />
                                         ) : (
                                             <LiveProvider code={svg.svgCode} scope={scope} transformCode={transformCode} noInline={true}>

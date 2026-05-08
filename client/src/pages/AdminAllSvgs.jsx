@@ -186,7 +186,7 @@ const AdminAllSvgs = () => {
                                             {svg.svgCode.trim().toLowerCase().startsWith('<svg') ? (
                                                 <div 
                                                     dangerouslySetInnerHTML={{ __html: svg.svgCode }} 
-                                                    className="w-full flex justify-center items-center [&>svg]:max-w-[100%] [&>svg]:max-h-[150px] [&>svg]:w-auto [&>svg]:h-auto" 
+                                                    className="w-full flex justify-center items-center [&>svg]:max-w-full [&>svg]:max-h-37.5 [&>svg]:w-auto [&>svg]:h-auto" 
                                                 />
                                             ) : (
                                                 <div className="w-full scale-90">

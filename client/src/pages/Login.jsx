@@ -110,7 +110,7 @@ const Login = () => {
                 ? "bg-yellow-500 text-black hover:bg-yellow-400 shadow-[0_0_20px_rgba(234,179,8,0.2)]"
                 : "bg-white/10 text-white/30 cursor-not-allowed"}`}
           >
-            Sign In
+            Login
           </button>
 
           <p className='text-center text-xs text-gray-500 mt-6'>

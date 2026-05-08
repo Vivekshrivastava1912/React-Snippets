@@ -198,7 +198,7 @@ const SvgPage = () => {
                                             {svg.svgCode.trim().toLowerCase().startsWith('<svg') ? (
                                                 <div 
                                                     dangerouslySetInnerHTML={{ __html: svg.svgCode }} 
-                                                    className="w-full h-full flex justify-center items-center [&>svg]:max-w-[100%] [&>svg]:max-h-[200px] [&>svg]:w-auto [&>svg]:h-auto" 
+                                                    className="w-full h-full flex justify-center items-center [&>svg]:max-w-full [&>svg]:max-h-50 [&>svg]:w-auto [&>svg]:h-auto" 
                                                 />
                                             ) : (
                                                 <LiveProvider code={svg.svgCode} scope={scope} transformCode={transformCode} noInline={true}>

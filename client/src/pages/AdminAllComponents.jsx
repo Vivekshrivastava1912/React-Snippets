@@ -141,7 +141,7 @@ const AdminAllComponents = () => {
                                         </div>
                                     </div>
 
-                                    <div className="p-5 flex-1 bg-black min-h-[250px] relative flex flex-col justify-center items-center overflow-hidden">
+                                    <div className="p-5 flex-1 bg-black min-h-62.5 relative flex flex-col justify-center items-center overflow-hidden">
                                         <div className="absolute top-3 right-3 z-10 flex gap-2">
                                             <button
                                                 onClick={() => handleCopy(comp.code, comp._id)}
