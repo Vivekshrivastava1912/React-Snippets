@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useLocation, useNavigate, Navigate } from 'react-router-dom';
-import { LiveProvider, LiveEditor, LivePreview, LiveError } from 'react-live';
+import { LiveProvider, LiveEditor, LivePreview, LiveError, LiveContext } from 'react-live';
 import * as LucideIcons from 'lucide-react';
 import * as FaIcons from 'react-icons/fa';
 import Axios from '../utils/Axios';
@@ -44,10 +44,24 @@ const transformCode = (code) => {
     return result;
 };
 
+const InterceptingLiveEditor = ({ codeRef, ...props }) => {
+    const live = React.useContext(LiveContext);
+
+    const handleChange = (newCode) => {
+        codeRef.current = newCode;
+        if (live && typeof live.onChange === 'function') {
+            live.onChange(newCode);
+        }
+    };
+
+    return <LiveEditor {...props} onChange={handleChange} />;
+};
+
 const EditComponent = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const [code, setCode] = useState(location.state?.code || '');
+    const [initialCode] = useState(location.state?.code || '');
+    const codeRef = useRef(location.state?.code || '');
     const [title, setTitle] = useState(location.state?.title || '');
     const [showSaveModal, setShowSaveModal] = useState(false);
     const [status, setStatus] = useState('Public');
@@ -69,7 +83,8 @@ const EditComponent = () => {
 
     const handleFinalSave = async (e) => {
         e.preventDefault();
-        if (!title.trim() || !code.trim()) {
+        const currentCode = codeRef.current;
+        if (!title.trim() || !currentCode.trim()) {
             toast.error("Please fill all fields!");
             return;
         }
@@ -78,7 +93,7 @@ const EditComponent = () => {
         try {
             const response = await Axios({
                 ...SummaryApi.saveCode,
-                data: { title, code, status },
+                data: { title, code: currentCode, status },
                 withCredentials: true
             });
 
@@ -95,6 +110,64 @@ const EditComponent = () => {
             setShowSaveModal(false);
         }
     };
+
+    const memoizedLiveWorkspace = useMemo(() => (
+        <LiveProvider code={initialCode} scope={scope} transformCode={transformCode} noInline={true}>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Editor */}
+                <div className="space-y-4">
+                    <label className="text-sm uppercase tracking-widest text-gray-500">Edit Source Code</label>
+                    <div className="w-full h-150 bg-[#0a0a0a] border border-white/10 rounded-lg overflow-hidden focus-within:border-yellow-500/30 transition-all">
+                        <div className="h-full overflow-auto custom-scrollbar">
+                            <InterceptingLiveEditor
+                                codeRef={codeRef}
+                                className="font-mono text-sm min-h-full"
+                                style={{
+                                    fontFamily: '"Fira Code", "Fira Mono", monospace',
+                                    backgroundColor: 'transparent',
+                                }}
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Preview */}
+                <div className="space-y-4">
+                    {/* Title and Zoom Controls in the same line */}
+                    <div className="flex justify-between items-center">
+                        <label className="text-sm uppercase tracking-widest text-gray-500">Live Preview</label>
+                        <div className="flex gap-2 items-center">
+                            <button
+                                onClick={() => setZoom(prev => Math.max(prev - 0.1, 0.3))}
+                                className="w-8 h-8 flex items-center justify-center bg-white/5 hover:bg-yellow-500/10 border border-white/10 rounded text-gray-400 hover:text-yellow-500 transition-colors"
+                            >
+                                -
+                            </button>
+                            <span className="text-[10px] text-yellow-500/50 uppercase tracking-tighter w-10 text-center font-mono">
+                                {Math.round(zoom * 100)}%
+                            </span>
+                            <button
+                                onClick={() => setZoom(prev => Math.min(prev + 0.1, 2))}
+                                className="w-8 h-8 flex items-center justify-center bg-white/5 hover:bg-yellow-500/10 border border-white/10 rounded text-gray-400 hover:text-yellow-500 transition-colors"
+                            >
+                                +
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="w-full h-150 bg-black border border-white/10 rounded-lg p-6 overflow-auto relative z-0 focus-within:border-yellow-500/20 transition-all" style={{ transform: 'translate3d(0,0,0)' }}>
+                        <div
+                            className="min-h-full w-full flex justify-center items-start transition-transform duration-200 ease-out"
+                            style={{ transform: `scale(${zoom})`, transformOrigin: 'top center' }}
+                        >
+                            <LivePreview className="w-full" />
+                        </div>
+                        <LiveError className="text-red-400 text-xs mt-6 font-mono whitespace-pre-wrap bg-red-400/10 p-4 rounded border border-red-400/20" />
+                    </div>
+                </div>
+            </div>
+        </LiveProvider>
+    ), [initialCode, zoom]);
 
     return (
         <div className="min-h-screen bg-[#050505] text-white pt-10 pb-12 px-6">
@@ -120,60 +193,7 @@ const EditComponent = () => {
                     </div>
                 </div>
 
-                <LiveProvider code={code} scope={scope} transformCode={transformCode} noInline={true} onChange={setCode}>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        {/* Editor */}
-                        <div className="space-y-4">
-                            <label className="text-sm uppercase tracking-widest text-gray-500">Edit Source Code</label>
-                            <div className="w-full h-150 bg-[#0a0a0a] border border-white/10 rounded-lg overflow-hidden focus-within:border-yellow-500/30 transition-all">
-                                <div className="h-full overflow-auto custom-scrollbar">
-                                    <LiveEditor
-                                        className="font-mono text-sm min-h-full"
-                                        style={{
-                                            fontFamily: '"Fira Code", "Fira Mono", monospace',
-                                            backgroundColor: 'transparent',
-                                        }}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Preview */}
-                        <div className="space-y-4">
-                            {/* Title and Zoom Controls in the same line */}
-                            <div className="flex justify-between items-center">
-                                <label className="text-sm uppercase tracking-widest text-gray-500">Live Preview</label>
-                                <div className="flex gap-2 items-center">
-                                    <button
-                                        onClick={() => setZoom(prev => Math.max(prev - 0.1, 0.3))}
-                                        className="w-8 h-8 flex items-center justify-center bg-white/5 hover:bg-yellow-500/10 border border-white/10 rounded text-gray-400 hover:text-yellow-500 transition-colors"
-                                    >
-                                        -
-                                    </button>
-                                    <span className="text-[10px] text-yellow-500/50 uppercase tracking-tighter w-10 text-center font-mono">
-                                        {Math.round(zoom * 100)}%
-                                    </span>
-                                    <button
-                                        onClick={() => setZoom(prev => Math.min(prev + 0.1, 2))}
-                                        className="w-8 h-8 flex items-center justify-center bg-white/5 hover:bg-yellow-500/10 border border-white/10 rounded text-gray-400 hover:text-yellow-500 transition-colors"
-                                    >
-                                        +
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div className="w-full h-150 bg-black border border-white/10 rounded-lg p-6 overflow-auto relative z-0 focus-within:border-yellow-500/20 transition-all" style={{ transform: 'translate3d(0,0,0)' }}>
-                                <div
-                                    className="min-h-full w-full flex justify-center items-start transition-transform duration-200 ease-out"
-                                    style={{ transform: `scale(${zoom})`, transformOrigin: 'top center' }}
-                                >
-                                    <LivePreview className="w-full" />
-                                </div>
-                                <LiveError className="text-red-400 text-xs mt-6 font-mono whitespace-pre-wrap bg-red-400/10 p-4 rounded border border-red-400/20" />
-                            </div>
-                        </div>
-                    </div>
-                </LiveProvider>
+                {memoizedLiveWorkspace}
             </div>
 
             {/* Modal Overlay */}

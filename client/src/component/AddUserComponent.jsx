@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { LiveProvider, LiveEditor } from 'react-live';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Axios from '../utils/Axios';
 import toast from 'react-hot-toast'; // Alert ki jagah Toast add kiya hai
 import SummaryApi from '../common/SummaryApi';
 
 const AddUserComponent = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         title: location.state?.title || '',
         code: location.state?.code || '',
@@ -21,15 +22,9 @@ const AddUserComponent = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Basic validation
-        if (!formData.title.trim() || !formData.code.trim()) {
-            toast.error("Please fill all fields!");
-            return;
-        }
-
-        setLoading(true);
 
         try {
+            setLoading(true);
             // Sahi format me axios request
             const response = await Axios({
                 ...SummaryApi.saveCode,
@@ -40,6 +35,7 @@ const AddUserComponent = () => {
             if (response.data.success) {
                 toast.success(response.data.message || "Snippet saved successfully!"); // Alert ki jagah success toast
                 setFormData({ title: '', code: '', status: 'Public' });
+                navigate(-1);
             } else {
                 toast.error(response.data.message || "Failed to save snippet.");
             }
