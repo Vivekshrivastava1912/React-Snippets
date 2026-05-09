@@ -203,7 +203,7 @@ const SvgPage = () => {
                                             ) : (
                                                 <LiveProvider code={svg.svgCode} scope={scope} transformCode={transformCode} noInline={true}>
                                                     <div className="w-full flex justify-center items-center">
-                                                        <LivePreview className="w-full max-h-64 overflow-y-auto flex justify-center items-center" />
+                                                        <LivePreview className="w-full flex justify-center items-center" />
                                                     </div>
                                                 </LiveProvider>
                                             )}

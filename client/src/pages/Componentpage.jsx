@@ -183,7 +183,7 @@ const Componentpage = () => {
                                         <div className="mt-8 text-sm overflow-hidden flex-1 flex justify-center items-center">
                                             <LiveProvider code={comp.code} scope={scope} transformCode={transformCode} noInline={true}>
                                                 <div className="w-full flex justify-center items-center">
-                                                    <LivePreview className="w-full max-h-64 overflow-y-auto flex justify-center items-center" />
+                                                    <LivePreview className="w-full flex justify-center items-center" />
                                                 </div>
                                                 <LiveError className="text-red-400 text-xs mt-4 font-mono whitespace-pre-wrap" />
                                             </LiveProvider>
