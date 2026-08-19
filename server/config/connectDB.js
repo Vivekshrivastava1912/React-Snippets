@@ -1,23 +1,35 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
-dotenv.config()
+dotenv.config();
 
+let isConnected = null;
 
-// mongodb ki api url ko .env file se le rahe hai
-
-// database se connect karne ke liye function
 async function connectDB() {
+  if (mongoose.connection.readyState === 1) {
+    return mongoose.connection;
+  }
+
+  if (isConnected) {
+    return isConnected;
+  }
+
   if (!process.env.MONGODB_URL) {
     console.error("Please provide MONGODB_URL in the .env file / Vercel Environment Variables");
-    return;
+    throw new Error("MONGODB_URL is missing in environment variables");
   }
+
   try {
-    await mongoose.connect(process.env.MONGODB_URL)
-    console.log("Mongodb connected successfully")
+    isConnected = await mongoose.connect(process.env.MONGODB_URL, {
+      serverSelectionTimeoutMS: 10000,
+    });
+    console.log("Mongodb connected successfully");
+    return isConnected;
   } catch (error) {
-    console.log("Failed to connect to database:", error)
-    // Removed process.exit(1) for Vercel compatibility
+    isConnected = null;
+    console.error("Failed to connect to database:", error.message || error);
+    throw error;
   }
 }
-export default connectDB
+
+export default connectDB;

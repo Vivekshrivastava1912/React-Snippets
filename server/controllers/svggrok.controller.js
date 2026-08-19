@@ -38,12 +38,12 @@ export async function svgGrokChat(request, response) {
     }
 
     catch (error) {
-
-        console.error("AI Generation Error:", error);
+        console.error("AI Generation Error in svggrok:", error);
         return response.status(500).json({
-            message: "Internal server error"
+            message: error.message || "Internal server error",
+            error: true,
+            success: false
         });
-
     }
 
 

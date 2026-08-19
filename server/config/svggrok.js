@@ -1,13 +1,12 @@
 import Groq from "groq-sdk";
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
-
 export async function main(question) {
   const chatCompletion = await getSvgGroqChatCompletion(question);
   console.log(chatCompletion.choices[0]?.message?.content || "");
 }
 
 export async function getSvgGroqChatCompletion(question) {
+  const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
   return groq.chat.completions.create({
     messages: [
       {
@@ -36,7 +35,6 @@ That is the EXACT format. Deliver masterpiece icons every single time.`
         content: question,
       },
     ],
-    model: "OpenAI/gpt-oss-120b"
-    ,
+    model: "openai/gpt-oss-120b",
   });
-} 
+}

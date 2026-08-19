@@ -1,13 +1,12 @@
 import Groq from "groq-sdk";
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
-
 export async function main(question) {
   const chatCompletion = await getGroqChatCompletion(question);
   console.log(chatCompletion.choices[0]?.message?.content || "");
 }
 
 export async function getGroqChatCompletion(question) {
+  const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
   return groq.chat.completions.create({
     messages: [
       {
@@ -33,16 +32,13 @@ OUTPUT FORMAT EXAMPLE (for a red animated button):
     </button>
 
 
-That is the EXACT format. Follow it every single time without exception.
-
-        `
+That is the EXACT format. Follow it every single time without exception.`
       },
       {
         role: "user",
         content: question,
       },
     ],
-   model: "llama-3.3-70b-versatile"  
-, 
+    model: "openai/gpt-oss-120b",
   });
 }

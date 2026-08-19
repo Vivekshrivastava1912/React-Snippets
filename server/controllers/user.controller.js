@@ -79,8 +79,6 @@ export async function loginController(request, response) {
     try {
         const { email, password } = request.body;
 
-        const user = await UserModel.findOne({ email })
-
         if (!email || !password) {
             return response.status(400).json({
                 message: "Email and password are required ....",
@@ -88,6 +86,8 @@ export async function loginController(request, response) {
                 success: false
             })
         }
+
+        const user = await UserModel.findOne({ email })
 
         if (!user) {
             return response.status(400).json({
@@ -113,8 +113,8 @@ export async function loginController(request, response) {
         })
         const cookieOptions = {
             httpOnly: true,
-            secure: true,
-            sameSite: 'None'
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax'
         }
         // Ye code missing hai aapke loginController mein
         response.cookie('accessToken', accesstoken, cookieOptions)
@@ -156,8 +156,8 @@ export async function logoutController(request, response) {
         const userId = request.userId;
         const cookieOptions = {
             httpOnly: true,
-            secure: true,
-            sameSite: 'None'
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax'
         }
 
         response.clearCookie('accessToken', cookieOptions);
@@ -527,8 +527,8 @@ export async function refreshToken(request, response) {
         const newAccessToken = await generatedAccessToken(userId)
         const cookieOptions = {
             httpOnly: true,
-            secure: true,
-            sameSite: 'None'
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax'
         }
         response.clearCookie('accesstoken', cookieOptions)
         response.cookie('accessToken', newAccessToken, cookieOptions)

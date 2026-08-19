@@ -17,8 +17,14 @@ dotenv.config()
 const app = express()
 
 
+const allowedOrigins = [
+    "https://react-snippets-seven.vercel.app",
+    "http://localhost:5173",
+    process.env.FRONTEND_URL
+].filter(Boolean);
+
 app.use(cors({
-    origin: ["https://react-snippets-seven.vercel.app", "http://localhost:5173", process.env.FRONTEND_URL],
+    origin: allowedOrigins,
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 }));
@@ -42,15 +48,24 @@ app.get('/', (request, response) => {
 })
 
 
+// Ensure DB connection is established before processing API routes
+app.use(async (request, response, next) => {
+    try {
+        await connectDB()
+        next()
+    } catch (error) {
+        return response.status(500).json({
+            message: "Database connection failed",
+            error: true,
+            success: false
+        })
+    }
+})
+
 app.use('/api/user', userRouter)
 app.use('/api/usercode', userCodeRouter)
 app.use('/api/ai', aiRouter)
 app.use('/api/svg', svgRouter)
-
-// Connect to Database
-connectDB().catch((error) => {
-    console.log('Failed to connect to database', error)
-})
 
 // For local development
 if (process.env.NODE_ENV !== 'production') {
