@@ -1,7 +1,7 @@
-import ForgotPassword from "../pages/ForgotPassword"
+import ForgotPassword from "../../pages/ForgotPassword"
 
 
-export const baseURL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? "http://localhost:8000" : "https://react-snippets-bacend.vercel.app") 
+export const baseURL = "https://react-snippets-bacend.vercel.app"
 
 const SummaryApi = {
     register: {
