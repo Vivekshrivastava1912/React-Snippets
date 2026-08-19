@@ -20,14 +20,23 @@ const app = express()
 const allowedOrigins = [
     "https://react-snippets-seven.vercel.app",
     "http://localhost:5173",
+    "http://localhost:3000",
+    "https://reactsnippets.vivekshrivastava.co.in"
+    ,
     process.env.FRONTEND_URL
 ].filter(Boolean);
 
 app.use(cors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+            return callback(null, true);
+        }
+        return callback(null, true);
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 }));
+
 
 
 
