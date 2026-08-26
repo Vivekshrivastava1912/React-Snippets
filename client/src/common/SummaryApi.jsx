@@ -66,7 +66,7 @@ const SummaryApi = {
         method: 'post'
     },
     svgAiGeneration: {
-        url : '/api/ai/svggrok',
+        url: '/api/ai/svggrok',
         method: 'post'
     },
     saveSvg: {
