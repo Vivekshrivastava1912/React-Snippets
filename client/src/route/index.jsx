@@ -92,7 +92,7 @@ const router = createBrowserRouter([
       },
       {
         path: "explore-svgs",
-        element: <ExploreSvgs />
+        element: <AuthGuard><ExploreSvgs /></AuthGuard>
       },
       {
         path: "admin/all-svgs",

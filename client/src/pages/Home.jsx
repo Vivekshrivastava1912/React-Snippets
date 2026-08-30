@@ -119,7 +119,7 @@ const Home = () => {
               icon={<FaLock size={20} />}
               title="Code Vault"
               description="Save your React snippets to your personal account. Choose between public or private visibility."
-              onClick={() => navigate(user?._id ? '/addsnippet' : '/login')}
+              onClick={() => navigate('/addsnippet')}
             />
             <FeatureCard
               icon={<FaRobot size={20} />}

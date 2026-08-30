@@ -5,7 +5,7 @@ import Header from './component/Header'
 import { useDispatch } from 'react-redux'
 import Axios from './utils/Axios'
 import SummaryApi from './common/SummaryApi'
-import { setUserDetails } from './redux/userSlice'
+import { setUserDetails, setLoading } from './redux/userSlice'
 import AddUserComponent from './component/AddUserComponent'
 
 function App() {
@@ -19,9 +19,12 @@ function App() {
 
       if (response.data.success) {
         dispatch(setUserDetails(response.data.data))
+      } else {
+        dispatch(setLoading(false))
       }
     } catch (error) {
       // User not logged in
+      dispatch(setLoading(false))
     }
   }
 
