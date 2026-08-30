@@ -10,3 +10,12 @@
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
 }
+
+/* Caret / writing line fix: Do not show text caret line on permanent text, show only in inputs */
+*:not(input):not(textarea):not([contenteditable="true"]) {
+    caret-color: transparent !important;
+}
+
+input, textarea, [contenteditable="true"] {
+    caret-color: auto !important;
+}
